@@ -10,7 +10,7 @@
                 <div class="panel-heading">
                     <strong>Ubah Password</strong>
                 </div>
-                <form action="." role="form" method="POST" class="form-vertical">
+                <form action="/changepassword/" role="form" method="POST" class="form-vertical">
                     {{ csrf_field() }}
                     <div class="panel-body">
                         <div class="row form-group center-block" >
