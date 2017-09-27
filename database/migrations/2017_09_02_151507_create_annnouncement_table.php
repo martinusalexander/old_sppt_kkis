@@ -25,6 +25,7 @@ class CreateAnnnouncementTable extends Migration
             $table->string('mass_announcement')->nullable();
             $table->boolean('flyer')->default(false);
             $table->string('bulletin')->nullable();
+            $table->string('website')->nullable();
             $table->string('facebook')->nullable();
             $table->string('instagram')->nullable();
             $table->integer('creator_id')->unsigned()->default(1);
