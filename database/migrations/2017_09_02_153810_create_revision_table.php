@@ -34,7 +34,7 @@ class CreateRevisionTable extends Migration
             
             $table->unique(array('announcement_id', 'revision_no'));
             
-            $table->foreign('announcement_id')->references('id')->on('announcement');
+            $table->foreign('announcement_id')->references('id')->on('announcement')->onDelete('cascade');
             $table->foreign('submitter_id')->references('id')->on('user');
         });
     }

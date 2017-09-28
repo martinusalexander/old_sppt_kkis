@@ -20,8 +20,8 @@ class CreateAnnouncementDistributionTable extends Migration
             $table->integer('revision_no')->unsigned()->default(0);
             $table->timestamps();
             
-            $table->foreign('announcement_id')->references('id')->on('announcement');
-            $table->foreign('distribution_id')->references('id')->on('distribution');
+            $table->foreign('announcement_id')->references('id')->on('announcement')->onDelete('cascade');
+            $table->foreign('distribution_id')->references('id')->on('distribution')->onDelete('cascade');
         });
     }
 
