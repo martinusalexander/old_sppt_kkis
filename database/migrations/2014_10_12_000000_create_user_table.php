@@ -22,7 +22,8 @@ class CreateUserTable extends Migration
             $table->rememberToken();
             $table->string('email_token')->nullable();
             $table->boolean('is_active')->default(false);
-            $table->boolean('is_staff')->default(false);
+            $table->boolean('is_distributor')->default(false);
+            $table->boolean('is_manager')->default(false);
             $table->boolean('is_admin')->default(false);
             $table->timestamps();
         });

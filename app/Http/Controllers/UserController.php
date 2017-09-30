@@ -99,7 +99,8 @@ class UserController extends Controller
             // By default, the first user in the database is assigned as the staff and the admin.
             if (User::count() == 1) {
                 $user->is_admin = true;
-                $user->is_staff = true;
+                $user->is_manager = true;
+                $user->is_distributor = true;
                 $user->save();
             }
             Mail::to($user)->send(new ActivateAccount($user));

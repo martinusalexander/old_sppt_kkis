@@ -32,13 +32,13 @@
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/announcement/">
-                            Kelola Pengumuman <br> (Buat/Ubah/Hapus)
+                            Buat/Ubah/Hapus Pengumuman
                             </a>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <a class="btn btn-default btn-block" href="/announcementdistribution/view">
+                            <a class="btn btn-default btn-block" href="/announcementdistribution/">
                             Lihat Seluruh Pengumuman
                             </a>
                         </div>
@@ -46,21 +46,28 @@
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class='hr'>
-                                <span class='hr-title'> Panel Staff </span>
+                                <span class='hr-title'> Panel Distributor Pengumuman </span>
                             </div>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/distribution/">
-                            Kelola Distribusi <br> (Buat/Ubah/Hapus)
+                            Buat/Ubah/Hapus Distribusi
                             </a>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <a class="btn btn-default btn-block" href="/announcementdistribution/">
-                                Kelola Pengumuman per Distribusi <br> (Kapabilitas Lanjutan)
+                            <a class="btn btn-default btn-block" href="/announcementdistribution/manage">
+                            Tolak Pengumuman dalam Distribusi <br> (misalkan karena kuota tidak mencukupi)
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row form-group center-block">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <a class="btn btn-default btn-block" href="/announcementdistribution/manage">
+                            Ubah Pengumuman dalam Distribusi <br> (misalkan karena ada kesalahan informasi)
                             </a>
                         </div>
                     </div>
@@ -74,10 +81,25 @@
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class='hr'>
-                                <span class='hr-title'> Panel Admin </span>
+                                <span class='hr-title'> Panel Manajer </span>
                             </div>
                         </div>
                     </div>
+                    <div class="row form-group center-block">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <a class="btn btn-default btn-block" href="/announcement/approve">
+                            Setujui (dan Revisi) Pengumuman
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row form-group center-block">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class='hr'>
+                                <span class='hr-title'> Panel Administrator </span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/accountmanagement/">
