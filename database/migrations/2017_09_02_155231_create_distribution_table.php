@@ -18,7 +18,6 @@ class CreateDistributionTable extends Migration
             $table->string('description');
             $table->datetime('date_time');
             $table->datetime('deadline')->nullable();
-            $table->boolean('is_final')->default(false);
             $table->integer('media_id')->unsigned()->default(1);
             $table->timestamps();
             

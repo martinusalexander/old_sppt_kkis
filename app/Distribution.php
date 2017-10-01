@@ -19,7 +19,7 @@ class Distribution extends Model
      * @var array
      */
     protected $fillable = [
-        'description', 'date_time', 'deadline', 'is_final', 'media_id',
+        'description', 'date_time', 'deadline', 'media_id',
     ];
     
     /**
