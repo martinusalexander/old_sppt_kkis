@@ -54,3 +54,10 @@ Route::match(['get', 'post'], '/media/create', 'MediaController@create');
 Route::match(['get'], '/media/edit/{media_id}', 'MediaController@edit');
 Route::match(['post'], '/media/edit/', 'MediaController@edit');
 Route::match(['get'], '/media/delete/{media_id}', 'MediaController@delete');
+
+//Distribution related urls
+Route::match(['get'], '/distribution', 'DistributionController@index');
+Route::match(['get', 'post'], '/distribution/create', 'DistributionController@create');
+Route::match(['get'], '/distribution/edit/{distribution_id}', 'DistributionController@edit');
+Route::match(['post'], '/distribution/edit', 'DistributionController@edit');
+Route::match(['get'], '/distribution/delete/{distribution_id}', 'DistributionController@delete');
