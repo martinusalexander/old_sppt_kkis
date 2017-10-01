@@ -18,6 +18,7 @@ class CreateAnnouncementDistributionTable extends Migration
             $table->integer('announcement_id')->unsigned()->default(1);
             $table->integer('distribution_id')->unsigned()->default(1);
             $table->integer('revision_no')->unsigned()->default(0);
+            $table->boolean('is_rejected')->default(false);
             $table->timestamps();
             
             $table->foreign('announcement_id')->references('id')->on('announcement')->onDelete('cascade');
