@@ -47,3 +47,10 @@ Route::match(['get'], '/announcement/approve/view/{announcement_id}', 'Announcem
 Route::match(['get'], '/announcement/approve/confirm/{announcement_id}', 'AnnouncementController@approve_confirm');
 Route::match(['get'], '/announcement/approve/edit/{announcement_id}', 'AnnouncementController@approve_edit');
 Route::match(['post'], '/announcement/approve/confirm', 'AnnouncementController@approve_confirm_edit');
+
+//Media related urls
+Route::match(['get'], '/media', 'MediaController@index');
+Route::match(['get', 'post'], '/media/create', 'MediaController@create');
+Route::match(['get'], '/media/edit/{media_id}', 'MediaController@edit');
+Route::match(['post'], '/media/edit/', 'MediaController@edit');
+Route::match(['get'], '/media/delete/{media_id}', 'MediaController@delete');
