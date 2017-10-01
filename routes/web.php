@@ -33,3 +33,17 @@ Route::match(['get'], '/resetpassword/{token}', 'UserController@reset_password')
 
 // Public related urls
 Route::match(['get'], '/', 'PublicController@main_menu');
+
+//Announcement related urls
+Route::match(['get'], '/announcement/', 'AnnouncementController@index');
+Route::match(['get', 'post'], '/announcement/create', 'AnnouncementController@create');
+Route::match(['get'], '/announcement/edit/{announcement_id}', 'AnnouncementController@edit');
+Route::match(['post'], '/announcement/edit/', 'AnnouncementController@edit');
+Route::match(['get'], '/announcement/view/{announcement_id}', 'AnnouncementController@view');
+Route::match(['get'], '/announcement/delete/{announcement_id}', 'AnnouncementController@delete');
+Route::match(['get'], '/announcement/preapproval/{announcement_id}', 'AnnouncementController@preapprove');
+Route::match(['get'], '/announcement/approve/', 'AnnouncementController@approve_index');
+Route::match(['get'], '/announcement/approve/view/{announcement_id}', 'AnnouncementController@approve_view');
+Route::match(['get'], '/announcement/approve/confirm/{announcement_id}', 'AnnouncementController@approve_confirm');
+Route::match(['get'], '/announcement/approve/edit/{announcement_id}', 'AnnouncementController@approve_edit');
+Route::match(['post'], '/announcement/approve/confirm', 'AnnouncementController@approve_confirm_edit');
