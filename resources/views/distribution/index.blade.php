@@ -86,7 +86,17 @@
                     <td>{{ $distribution->description }}</td>
                     <td>{{ $distribution->date_time }} </td>
                     <td>{{ $distribution->deadline }} </td>
-                    <td class="hidden-xs">{{ $distribution->status }}</td>
+                    <td class="hidden-xs">
+                        @if (@$distribution->status === 'FINAL')
+                        <span class="label label-danger">
+                        @elseif (@$distribution->status === 'MENERIMA PENGUMUMAN')
+                        <span class="label label-success">
+                        @else
+                        <span class="label label-warning">
+                        @endif
+                            {{ $distribution->status }}
+                        </span>
+                    </td>
                     <td>{{ $distribution->media_name }}</td>
                     <td>
                         <div class="list-group">

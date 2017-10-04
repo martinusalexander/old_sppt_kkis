@@ -60,6 +60,7 @@ Route::match(['get'], '/distribution', 'DistributionController@index');
 Route::match(['get', 'post'], '/distribution/create', 'DistributionController@create');
 Route::match(['get'], '/distribution/edit/{distribution_id}', 'DistributionController@edit');
 Route::match(['post'], '/distribution/edit', 'DistributionController@edit');
+Route::match(['get'], '/distribution/view/{distribution_id}', 'DistributionController@view');
 Route::match(['get'], '/distribution/delete/{distribution_id}', 'DistributionController@delete');
 
 // Announcement distribution related urls
