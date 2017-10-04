@@ -33,8 +33,9 @@ class DistributionController extends Controller
             return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
         }
         $now = Carbon::now();
-        $distributions = Distribution::where('date_time', '>', $now)->get();
-        foreach ($distributions as $distribution) {
+        $offline_media_ids = Media::where('is_online', false)->pluck('id')->toArray();
+        $offline_distributions = Distribution::where('date_time', '>', $now)->whereIn('media_id', $offline_media_ids)->get();
+        foreach ($offline_distributions as $distribution) {
             $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
             $distribution->deadline = Carbon::parse($distribution->deadline)->format('l, j F Y, g:i a');
             $distribution->media_name = $distribution->media()->first()->name;
@@ -48,8 +49,11 @@ class DistributionController extends Controller
             } else {
                 $distribution->status = 'MENERIMA PENGUMUMAN';
             }
-        }      
-        return view('distribution.index', ['distributions' => $distributions]);
+        }
+        $online_media_ids = Media::where('is_online', true)->pluck('id')->toArray();
+        $online_distributions = Distribution::whereIn('media_id', $online_media_ids)->get();
+        return view('distribution.index', ['offline_distributions' => $offline_distributions,
+                                           'online_distributions' => $online_distributions]);
     }
     
     /**
@@ -65,13 +69,17 @@ class DistributionController extends Controller
             return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
         }
         if ($request->isMethod('get')) {
-            $media = Media::get();
+            $media = Media::where('is_online', false)->get();
             return view('distribution.create', ['media' => $media]);
         } else {
             $description = $request->input('description');
             $date_time = $request->input('date-time');
             $deadline_time = $request->input('deadline');
             $media_id = $request->input('media');
+            // Cannot create distribution for online media
+            if (Media::where('id', $media_id)->first()->is_online) {
+                return redirect('/distribution')->with('error_message', 'Anda tidak diperbolehkan membuat distribusi menggunakan media tersebut.');
+            }
             // Convert dates to database format
             $date_time = Carbon::parse($date_time)->format('Y-m-d H:i:s');
             $deadline_time = Carbon::parse($deadline_time)->format('Y-m-d H:i:s');
@@ -115,7 +123,11 @@ class DistributionController extends Controller
             if (!$distribution) {
                 return redirect('/distribution')->with('error_message', 'Link yang Anda masukkan salah.');
             }
-            $media = Media::get();
+            // Cannot edit distribution for online media
+            if ($distribution->media()->first()->is_online) {
+                return redirect('/distribution')->with('error_message', 'Anda tidak diperbolehkan mengubah distribusi yang menggunakan media tersebut.');
+            }
+            $media = Media::where('is_online', false)->get();
             return view('distribution.edit', ['distribution' => $distribution, 'media' => $media]);
         } else {
             $id = $request->input('id');
@@ -165,7 +177,10 @@ class DistributionController extends Controller
         if (!$distribution) {
             return redirect('/distribution')->with('error_message', 'Link yang Anda masukkan salah.');
         }
-        
+        // Cannot delete distribution for online media
+        if ($distribution->media()->first()->is_online) {
+            return redirect('/distribution')->with('error_message', 'Anda tidak diperbolehkan menghapus distribusi yang menggunakan media tersebut.');
+        }
         $update_announcement_distribution_details = array(
             'action' => 'DELETE_DISTRIBUTION',
             'id' => $distribution->id,
