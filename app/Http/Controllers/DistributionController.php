@@ -91,7 +91,7 @@ class DistributionController extends Controller
             ]);
             $update_announcement_distribution_details = array(
                 'action' => 'NEW_DISTRIBUTION',
-                'id' => $distribution->id,
+                'distribution' => $distribution,
             );
             // Must call the function in another controller non-statically
             // Reference: https://stackoverflow.com/a/19694064
@@ -138,15 +138,18 @@ class DistributionController extends Controller
             // Convert dates to database format
             $date_time = Carbon::parse($date_time)->format('Y-m-d H:i:s');
             $deadline_time = Carbon::parse($deadline_time)->format('Y-m-d H:i:s');
+            $old_distribution = Distribution::where('id', $id)->first();
             Distribution::where('id', $id)->update([
                 'description' => $description,
                 'date_time' => $date_time,
                 'deadline' => $deadline_time,
                 'media_id' => $media_id,
             ]);
+            $new_distribution = Distribution::where('id', $id)->first();
             $update_announcement_distribution_details = array(
                 'action' => 'EDIT_DISTRIBUTION',
-                'id' => $id,
+                'old_distribution' => $old_distribution,
+                'new_distribution' => $new_distribution,
             );
             // Must call the function in another controller non-statically
             // Reference: https://stackoverflow.com/a/19694064
@@ -183,7 +186,7 @@ class DistributionController extends Controller
         }
         $update_announcement_distribution_details = array(
             'action' => 'DELETE_DISTRIBUTION',
-            'id' => $distribution->id,
+            'distribution' => $distribution,
         );
         // Must call the function in another controller non-statically
         // Reference: https://stackoverflow.com/a/19694064

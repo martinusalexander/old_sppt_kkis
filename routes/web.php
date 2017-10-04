@@ -34,7 +34,7 @@ Route::match(['get'], '/resetpassword/{token}', 'UserController@reset_password')
 // Public related urls
 Route::match(['get'], '/', 'PublicController@main_menu');
 
-//Announcement related urls
+// Announcement related urls
 Route::match(['get'], '/announcement/', 'AnnouncementController@index');
 Route::match(['get', 'post'], '/announcement/create', 'AnnouncementController@create');
 Route::match(['get'], '/announcement/edit/{announcement_id}', 'AnnouncementController@edit');
@@ -48,16 +48,24 @@ Route::match(['get'], '/announcement/approve/confirm/{announcement_id}', 'Announ
 Route::match(['get'], '/announcement/approve/edit/{announcement_id}', 'AnnouncementController@approve_edit');
 Route::match(['post'], '/announcement/approve/confirm', 'AnnouncementController@approve_confirm_edit');
 
-//Media related urls
+// Media related urls
 Route::match(['get'], '/media', 'MediaController@index');
 Route::match(['get', 'post'], '/media/create', 'MediaController@create');
 Route::match(['get'], '/media/edit/{media_id}', 'MediaController@edit');
 Route::match(['post'], '/media/edit/', 'MediaController@edit');
 Route::match(['get'], '/media/delete/{media_id}', 'MediaController@delete');
 
-//Distribution related urls
+// Distribution related urls
 Route::match(['get'], '/distribution', 'DistributionController@index');
 Route::match(['get', 'post'], '/distribution/create', 'DistributionController@create');
 Route::match(['get'], '/distribution/edit/{distribution_id}', 'DistributionController@edit');
 Route::match(['post'], '/distribution/edit', 'DistributionController@edit');
 Route::match(['get'], '/distribution/delete/{distribution_id}', 'DistributionController@delete');
+
+// Announcement distribution related urls
+Route::match(['get'], '/announcementdistribution', 'AnnouncementDistributionController@view');
+Route::match(['get'], '/announcementdistribution/view/{distribution_id}', 'AnnouncementDistributionController@view');
+Route::match(['get'], '/announcementdistribution/manage', 'AnnouncementDistributionController@manage');
+Route::match(['get'], '/announcementdistribution/manage/{distribution_id}', 'AnnouncementDistributionController@manage');
+Route::match(['get'], '/announcementdistribution/update/{announcement_distribution_id}', 'AnnouncementDistributionController@update_to_latest_version');
+Route::match(['get'], '/announcementdistribution/reject/{announcement_distribution_id}', 'AnnouncementDistributionController@reject');

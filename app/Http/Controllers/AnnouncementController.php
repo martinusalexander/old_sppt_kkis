@@ -235,6 +235,7 @@ class AnnouncementController extends Controller
             }
             // Update the announcement
             $revision_number = Revision::where('announcement_id', $id)->max('revision_no') + 1;
+            $old_announcement = Announcement::where('id', $id)->first();
             Announcement::where('id', $id)->update([
                 'current_revision_no' => $revision_number,
                 'title' => $title,
@@ -251,6 +252,7 @@ class AnnouncementController extends Controller
                 'instagram' => $instagram,
                 'last_editor_id' => Auth::id(),
             ]);
+            $new_announcement = Announcement::where('id', $id)->first();
             // Create revision to the announcement
             Revision::create([
                 'announcement_id' => $id,
@@ -269,10 +271,11 @@ class AnnouncementController extends Controller
                 'instagram' => $instagram,
                 'submitter_id' => Auth::id(),
             ]);
-            if ($announcement->is_approved) {
+            if ($new_announcement->is_approved) {
                 $update_announcement_distribution_details = array(
                     'action' => 'EDIT_ANNOUNCEMENT',
-                    'id' => $id,
+                    'old_announcement' => $old_announcement,
+                    'new_announcement' => $new_announcement,
                 );
                 // Must call the function in another controller non-statically
                 //Reference: https://stackoverflow.com/a/19694064
@@ -343,7 +346,7 @@ class AnnouncementController extends Controller
         if ($announcement->is_approved) {
             $update_announcement_distribution_details = array(
                 'action' => 'DELETE_ANNOUNCEMENT',
-                'id' => $announcement_id,
+                'announcement' => $announcement,
             );
             // Must call the function in another controller non-statically
             //Reference: https://stackoverflow.com/a/19694064
@@ -435,7 +438,7 @@ class AnnouncementController extends Controller
                             'approver_id' => Auth::id()]);
         $update_announcement_distribution_details = array(
             'action' => 'CREATE_ANNOUNCEMENT',
-            'id' => $announcement_id,
+            'announcement' => $announcement,
         );
         // Must call the function in another controller non-statically
         //Reference: https://stackoverflow.com/a/19694064
@@ -540,7 +543,7 @@ class AnnouncementController extends Controller
         }
         // Update the announcement
         $revision_number = Revision::where('announcement_id', $id)->max('revision_no') + 1;
-        Announcement::where('id', $id)->update([
+        $announcement = Announcement::where('id', $id)->update([
             'current_revision_no' => $revision_number,
             'title' => $title,
             'description' => $description,
@@ -578,7 +581,7 @@ class AnnouncementController extends Controller
         ]);
         $update_announcement_distribution_details = array(
             'action' => 'CREATE_ANNOUNCEMENT',
-            'id' => $id,
+            'announcement' => $announcement,
         );
         // Must call the function in another controller non-statically
         //Reference: https://stackoverflow.com/a/19694064
