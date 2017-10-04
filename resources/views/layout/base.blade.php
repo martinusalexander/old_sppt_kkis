@@ -19,7 +19,7 @@
         @yield('extra_js')
     </head>
     <body>
-        
+        @include('layout.title')
         <div class="container">
             @yield('content')
         </div>
