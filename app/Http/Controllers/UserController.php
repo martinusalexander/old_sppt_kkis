@@ -236,4 +236,64 @@ class UserController extends Controller
             
         }
     }
+    
+    /**
+     * Display a account management page
+     * 
+     * @param Request $request
+     * @return Response/redirect
+     */
+    public function manage(Request $request) {
+        if (!Auth::user()->is_admin) {
+            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+        }
+        $accounts = User::get();
+        $user = Auth::user();
+        return view('account.manage', ['accounts' => $accounts, 'user' => $user]);
+    }
+    
+    /**
+     * Set the role of a user a account management page
+     * 
+     * @param Request $request
+     * @return Response/redirect
+     */
+    public function set(Request $request, $role = null, $user_id = null) {
+        if (!Auth::user()->is_admin) {
+            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+        }
+        $roles = array('distributor', 'manager', 'admin');
+        if ($role === null || $user_id === null || !in_array($role, $roles)) {
+            return redirect('/accountmanagement/')->with('error_message', 'Link yang Anda masukkan salah.');
+        }
+        $user = User::where('id', $user_id)->first();
+        if (!$user) {
+            return redirect('/accountmanagement/')->with('error_message', 'Link yang Anda masukkan salah.');
+        }
+        if ($role === 'distributor') {
+            $previous_condition = $user->is_distributor;
+            User::where('id', $user_id)->update([
+                'is_distributor' => !$previous_condition,
+            ]);
+        } else if ($role === 'manager') {
+            $previous_condition = $user->is_manager;
+            User::where('id', $user_id)->update([
+                'is_manager' => !$previous_condition,
+            ]);
+        } else {
+            // Admin
+            $previous_condition = $user->is_manager;
+            User::where('id', $user_id)->update([
+                'is_admin' => !$previous_condition,
+            ]);
+        }
+        if ($previous_condition == true) {
+            $action = 'diturunkan dari';
+        } else {
+            $action = 'dinaikkan ke';
+        }
+        $success_message = $user->name.' telah berhasil '.$action.' '.$role.'.';
+        return redirect('/accountmanagement/')->with('success_message', $success_message);
+    }
+    
 }
