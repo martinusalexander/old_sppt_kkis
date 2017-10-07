@@ -189,7 +189,7 @@ class DistributionController extends Controller
                 'media_id' => $media_id,
             ]);
             $update_announcement_distribution_details = array(
-                'action' => 'NEW_DISTRIBUTION',
+                'action' => 'CREATE_DISTRIBUTION',
                 'distribution' => $distribution,
             );
             // Must call the function in another controller non-statically
