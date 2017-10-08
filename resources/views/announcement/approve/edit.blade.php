@@ -180,16 +180,16 @@
                         <input type="hidden" name="id" id="id" value="{{ $announcement->id }}">
                         <div class="row form-group center-block" >
                             <label for="title"> Judul: </label>
-                            <input type="text" name="title" id="title" class="form-control" value="{{ $announcement->title }}">
+                            <input type="text" name="title" id="title" class="form-control" value="{{ $announcement->title }}" required>
                         </div>
                         <div class="row form-group center-block">
                             <label for="descrption"> Deskripsi: </label>
-                            <textarea name="description" id="description" class="form-control" rows="5">{{ $announcement->description }}</textarea>
+                            <textarea name="description" id="description" class="form-control" rows="5" required>{{ $announcement->description }}</textarea>
                         </div>
                         <div class="row form-group center-block">
                             <label> Waktu: <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#date-time-modal">Info</button></label>
                             <div class='input-group date' id='datetimepicker'>
-                                <input type='text' class="form-control" name="date-time" id="date-time" value="{{ $announcement->date_time }}">
+                                <input type='text' class="form-control" name="date-time" id="date-time" value="{{ $announcement->date_time }}" required>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -295,7 +295,7 @@
                                                 <label class="checkbox" for="custom-mass-announcement"><input type="checkbox" id="custom-mass-announcement" @if ($announcement->mass_announcement !== null && $announcement->mass_announcement !== $announcement->description) checked @endif> Gunakan deskripsi tersendiri untuk pengumuman misa (sebelum berkat penutup)  </label>
                                             </div>
                                             <div class="form-group">
-                                                <textarea name="mass-announcement" id="mass-announcement" class="form-control" rows="5" @if (!($announcement->mass_announcement !== null && $announcement->mass_announcement !== $announcement->description)) readonly @endif>{{ $announcement->mass_announcement }}</textarea>
+                                                <textarea name="mass-announcement" id="mass-announcement" class="form-control" rows="5" required @if (!($announcement->mass_announcement !== null && $announcement->mass_announcement !== $announcement->description)) readonly @endif>{{ $announcement->mass_announcement }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -319,7 +319,7 @@
                                                 <label class="checkbox" for="custom-bulletin"><input type="checkbox" id="custom-bulletin" @if ($announcement->bulletin !== null && $announcement->bulletin !== $announcement->description) checked @endif> Gunakan deskripsi tersendiri untuk bulletin Dombaku </label>
                                             </div>
                                             <div class="form-group">
-                                                <textarea name="bulletin" id="bulletin" class="form-control" rows="5" @if (!($announcement->bulletin !== null && $announcement->bulletin !== $announcement->description)) readonly @endif>{{ $announcement->bulletin }}</textarea>
+                                                <textarea name="bulletin" id="bulletin" class="form-control" rows="5" required @if (!($announcement->bulletin !== null && $announcement->bulletin !== $announcement->description)) readonly @endif>{{ $announcement->bulletin }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -336,7 +336,7 @@
                                                 <label class="checkbox" for="custom-website"><input type="checkbox" id="custom-website" @if ($announcement->website !== null && $announcement->website !== $announcement->description) checked @endif> Gunakan deskripsi tersendiri untuk website KKIS </label>
                                             </div>
                                             <div class="form-group">
-                                                <textarea name="website" id="website" class="form-control" rows="5" @if (!($announcement->website !== null && $announcement->website !== $announcement->description)) readonly @endif>{{ $announcement->website }}</textarea>
+                                                <textarea name="website" id="website" class="form-control" rows="5" required @if (!($announcement->website !== null && $announcement->website !== $announcement->description)) readonly @endif>{{ $announcement->website }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -353,7 +353,7 @@
                                                 <label class="checkbox" for="custom-facebook"><input type="checkbox" id="custom-facebook" @if ($announcement->facebook !== null && $announcement->facebook !== $announcement->description) checked @endif> Gunakan deskripsi tersendiri untuk Facebook </label>
                                             </div>
                                             <div class="form-group">
-                                                <textarea name="facebook" id="facebook" class="form-control" rows="5" @if (!($announcement->facebook !== null && $announcement->facebook !== $announcement->description)) readonly @endif>{{ $announcement->facebook }}</textarea>
+                                                <textarea name="facebook" id="facebook" class="form-control" rows="5" required @if (!($announcement->facebook !== null && $announcement->facebook !== $announcement->description)) readonly @endif>{{ $announcement->facebook }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -370,7 +370,7 @@
                                                 <label class="checkbox" for="custom-instagram"><input type="checkbox" id="custom-instagram" @if ($announcement->instagram !== null && $announcement->instagram !== $announcement->description) checked @endif > Gunakan deskripsi tersendiri untuk Instagram </label>
                                             </div>
                                             <div class="form-group">
-                                                <textarea name="instagram" id="instagram" class="form-control" rows="5" @if (!($announcement->instagram !== null && $announcement->instagram !== $announcement->description)) readonly @endif>{{ $announcement->instagram }}</textarea>
+                                                <textarea name="instagram" id="instagram" class="form-control" rows="5" required @if (!($announcement->instagram !== null && $announcement->instagram !== $announcement->description)) readonly @endif>{{ $announcement->instagram }}</textarea>
                                             </div>
                                         </div>
                                     </div>

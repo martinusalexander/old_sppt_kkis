@@ -138,16 +138,16 @@
                     <div class="panel-body">
                         <div class="row form-group center-block" >
                             <label for="title"> Judul: </label>
-                            <input type="text" name="title" id="title" class="form-control">
+                            <input type="text" name="title" id="title" class="form-control" required>
                         </div>
                         <div class="row form-group center-block">
                             <label for="description"> Deskripsi: </label>
-                            <textarea name="description" id="description" class="form-control" rows="5"></textarea>
+                            <textarea name="description" id="description" class="form-control" rows="5" required></textarea>
                         </div>
                         <div class="row form-group center-block">
                             <label> Waktu: <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#date-time-modal">Info</button></label>
                             <div class='input-group date' id='datetimepicker'>
-                                <input type='text' class="form-control" name="date-time" id="date-time">
+                                <input type='text' class="form-control" name="date-time" id="date-time" required>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -239,7 +239,7 @@
                                                 <label class="checkbox" for="custom-mass-announcement"><input type="checkbox" id="custom-mass-announcement"> (Opsional) Gunakan deskripsi berbeda untuk pengumuman misa </label>
                                             </div>
                                             <div class="form-group">
-                                                <textarea name="mass-announcement" id="mass-announcement" class="form-control" rows="5" readonly></textarea>
+                                                <textarea name="mass-announcement" id="mass-announcement" class="form-control" rows="5" readonly required></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -263,7 +263,7 @@
                                                 <label class="checkbox" for="custom-bulletin"><input type="checkbox" id="custom-bulletin"> (Opsional) Gunakan deskripsi berbeda untuk bulletin Dombaku </label>
                                             </div>
                                             <div class="form-group">
-                                                <textarea name="bulletin" id="bulletin" class="form-control" rows="5" readonly></textarea>
+                                                <textarea name="bulletin" id="bulletin" class="form-control" rows="5" readonly required></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -280,7 +280,7 @@
                                                 <label class="checkbox" for="custom-website"><input type="checkbox" id="custom-website"> (Opsional) Gunakan deskripsi berbeda untuk website KKIS </label>
                                             </div>
                                             <div class="form-group">
-                                                <textarea name="website" id="website" class="form-control" rows="5" readonly></textarea>
+                                                <textarea name="website" id="website" class="form-control" rows="5" readonly required></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -297,7 +297,7 @@
                                                 <label class="checkbox" for="custom-facebook"><input type="checkbox" id="custom-facebook"> (Opsional) Gunakan deskripsi berbeda untuk Facebook </label>
                                             </div>
                                             <div class="form-group">
-                                                <textarea name="facebook" id="facebook" class="form-control" rows="5" readonly></textarea>
+                                                <textarea name="facebook" id="facebook" class="form-control" rows="5" readonly required></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -314,7 +314,7 @@
                                                 <label class="checkbox" for="custom-instagram"><input type="checkbox" id="custom-instagram"> (Opsional) Gunakan deskripsi berbeda untuk Instagram </label>
                                             </div>
                                             <div class="form-group">
-                                                <textarea name="instagram" id="instagram" class="form-control" rows="5" readonly></textarea>
+                                                <textarea name="instagram" id="instagram" class="form-control" rows="5" readonly required></textarea>
                                             </div>
                                         </div>
                                     </div>

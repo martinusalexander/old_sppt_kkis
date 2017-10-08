@@ -30,12 +30,12 @@
                     <div class="panel-body">
                         <div class="row form-group center-block" >
                             <label for="description"> Deskripsi: </label>
-                            <input type="text" name="description" id="description" class="form-control">
+                            <input type="text" name="description" id="description" class="form-control" required>
                         </div>
                          <div class="row form-group center-block">
                             <label> Waktu Distribusi: </label>
                             <div class='input-group date' id='datetimepicker'>
-                                <input type='text' class="form-control" name="date-time" id="date-time">
+                                <input type='text' class="form-control" name="date-time" id="date-time" required>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -44,7 +44,7 @@
                         <div class="row form-group center-block">
                             <label> Batas Akhir (Deadline) Pengumpulan Pengumuman: </label>
                             <div class='input-group date' id='deadlinepicker'>
-                                <input type='text' class="form-control" name="deadline" id="deadline">
+                                <input type='text' class="form-control" name="deadline" id="deadline" required>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>

@@ -41,6 +41,7 @@ class UserController extends Controller
         } else {
             // Attempt to login
             $email = $request->input('email');
+            $email = strtolower($email);
             $password = $request->input('password');
             $remember = $request->input('remember');
             $credentials = array('email' => $email, 
@@ -82,6 +83,7 @@ class UserController extends Controller
         $name = $request->input('name');
         $organization_name = $request->input('organization-name');
         $email = $request->input('email');
+        $email = strtolower($email);
         $password = $request->input('password');
         // Encrypt the password
         $password = Hash::make($password);
@@ -194,6 +196,7 @@ class UserController extends Controller
             return view('user.forgetpassword');
         } else {
             $email = $request->input('email');
+            $email = strtolower($email);
             // Encode the email (for reset purpose)
             $email_token = base64_encode($email);
             $user = User::where('email', $email)->first();
@@ -223,6 +226,7 @@ class UserController extends Controller
             return view('user.resetpassword', ['user' => $user]);
         } else {
             $email = $request->input('email');
+            $email = strtolower($email);
             $password = $request->input('password');
             $user = User::where('email', $email)->first();
             // Encrypt the password

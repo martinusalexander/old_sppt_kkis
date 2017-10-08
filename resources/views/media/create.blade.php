@@ -25,7 +25,7 @@
                     <div class="panel-body">
                         <div class="row form-group center-block">
                             <label for="name"> Nama Media: </label>
-                            <input type="text" name="name" id="name" class="form-control">
+                            <input type="text" name="name" id="name" class="form-control" required>
                         </div>
                         <div class="row form-group center-block">
                             <label> Jenis Media: </label>

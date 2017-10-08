@@ -13,11 +13,11 @@
                     <div class="panel-body">
                         <div class="row form-group center-block">
                             <label for="name"> Nama: </label>
-                            <input type="text" name="name" id="name" value="{{ $user->name }}" class="form-control">
+                            <input type="text" name="name" id="name" value="{{ $user->name }}" class="form-control" required>
                         </div>
                         <div class="row form-group center-block">
                             <label for="organization-name"> Nama Ranting/Unit: </label>
-                            <input type="text" name="organization-name" id="organization-name" value="{{ $user->organization_name }}" class="form-control">
+                            <input type="text" name="organization-name" id="organization-name" value="{{ $user->organization_name }}" class="form-control" required>
                         </div>
                         <div class="row form-group center-block">
                             <div class="form-group">

@@ -18,7 +18,7 @@
                         </div>
                         <div class="row form-group center-block" >
                             <label for="email"> Email: </label>
-                            <input type="text" name="email" id="email" class="form-control">
+                            <input type="text" name="email" id="email" class="form-control" required>
                         </div>
                         <div class="row form-group center-block">
                             <div class="form-group">

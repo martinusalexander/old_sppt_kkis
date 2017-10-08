@@ -2,6 +2,18 @@
 
 @section('title', 'Atur Ulang (Reset) Password')
 
+@section('extra_js')
+<script>
+    function validate_password() {
+        if ($('#password').val() !== $('#password-confirmation').val()) {
+            alert("Password tidak cocok.");
+            $('#password').focus();
+            return false;
+        } 
+    }
+</script>
+@endsection
+
 @section('content')
     @include('layout.message')
     <div class="row">
@@ -10,7 +22,7 @@
                 <div class="panel-heading">
                     <h3><b>Atur Ulang (Reset) Password</b></h3>
                 </div>
-                <form action="/resetpassword/" role="form" method="POST" class="form-vertical">
+                <form action="/resetpassword/" role="form" method="POST" class="form-vertical" onsubmit="return validate_password()">
                     {{ csrf_field() }}
                     <div class="panel-body">
                         <div class="row form-group center-block" >
@@ -19,11 +31,11 @@
                         </div>
                         <div class="row form-group center-block">
                             <label for="password"> Password baru: </label>
-                            <input type="password" name="password" id="password" class="form-control">
+                            <input type="password" name="password" id="password" class="form-control" required>
                         </div>
                         <div class="row form-group center-block">
                             <label for="password-confirmation"> Ulangi password baru: </label>
-                            <input type="password" name="password-confirmation" id="password-confirmation" class="form-control">
+                            <input type="password" name="password-confirmation" id="password-confirmation" class="form-control" required>
                         </div>
                         <div class="row form-group center-block">
                             <div class="form-group">
