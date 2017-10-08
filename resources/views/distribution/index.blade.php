@@ -42,8 +42,10 @@
 @section('content')
     @include('layout.message')
     <div class="row">
+        <h3><b>Distribusi Online</b></h3>
+    </div>
+    <div class="row">
         <table id="online-distribution-table" class="table table-striped table-bordered table-hover">
-            <caption> Distribusi Offline </caption>
             <thead>
                 <tr>
                     <th name="online-no-col"> No.</th>
@@ -65,9 +67,15 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
+    <div class="row">
+        <h3><b>Distribusi Offline</b></h3>
+    </div>
+    <div class="form-group">
         <a href="/distribution/create/" class="btn btn-primary" role="button">Buat Distribusi Offline Baru</a>
+    </div>
+    <div class="row">
         <table id="offline-distribution-table" class="table table-striped table-bordered table-hover">
-            <caption> Distribusi Offline </caption>
             <thead>
                 <tr>
                     <th name="offline-no-col"> No.</th>

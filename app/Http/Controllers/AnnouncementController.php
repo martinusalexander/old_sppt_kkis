@@ -31,12 +31,12 @@ class AnnouncementController extends Controller
     public function index(Request $request) {
         $user = Auth::user();
         $time_now = Carbon::now()->format('Y-m-d H:i:s');
-        if (!$user->is_admin && !$user->is_manager) {
+        if (!($user->is_admin || $user->is_manager)) {
             // Only display announcements created by the user
-            $present_announcements = $user->announcements_created()->where('date_time', '>', $time_now)->get();
+            $present_announcements = $user->announcements_created()->where('date_time', '>', $time_now)->orderBy('date_time')->get();
         } else {
             // Display all announcements
-            $present_announcements = Announcement::where('date_time', '>', $time_now)->get();
+            $present_announcements = Announcement::where('date_time', '>', $time_now)->orderBy('date_time')->get();
         }
         return view('announcement.index', ['present_announcements' => $present_announcements]);
     }
@@ -171,7 +171,7 @@ class AnnouncementController extends Controller
                 $announcement->image_path = Storage::url($announcement->image_path);
             }
             // Convert date to HTML input format
-            $date_time = Carbon::parse($announcement->date_time)->format('m/d/Y, g:i A');
+            $date_time = Carbon::parse($announcement->date_time)->format('m/d/Y g:i A');
             $announcement->date_time = $date_time;
             return view('announcement.edit', ['announcement' => $announcement]);
         } else {
@@ -308,7 +308,7 @@ class AnnouncementController extends Controller
             $announcement->image_path = Storage::url($announcement->image_path);
         } 
         // Convert date to HTML input format
-        $date_time = Carbon::parse($announcement->date_time)->format('m/d/Y, g:i A');
+        $date_time = Carbon::parse($announcement->date_time)->format('l, j F Y, g:i a');
         $announcement->date_time = $date_time;
         return view('announcement.view', ['announcement' => $announcement]);
     }
@@ -384,12 +384,13 @@ class AnnouncementController extends Controller
             $announcement->image_path = Storage::url($announcement->image_path);
         } 
         // Convert date to HTML input format
-        $date_time = Carbon::parse($announcement->date_time)->format('m/d/Y, g:i A');
+        $date_time = Carbon::parse($announcement->date_time)->format('l, j F Y, g:i a');
         $announcement->date_time = $date_time;
-        return view('announcement.approve.view', ['warning_message' => "Anda disarankan untuk mengevaluasi pengumuman ini dengan seksama."
-                                                                    ."1. Pastikan informasi dalam pengumuman ini benar."
-                                                                    ."2. Pastikan pengumuman yang tertera di sistem ini sama dengan yang akan ditampilkan."
-                                                                    ."3. Jika diperlukan, ubahlah pengumuman ini sebelum menyetujuinya.",
+        $announcement->creator_name = $announcement->creator()->first()->name;
+        return view('announcement.approve.view', ['warning_message' => nl2br("Anda disarankan untuk mengevaluasi pengumuman ini dengan seksama."
+                                                                    ."\n1. Pastikan informasi dalam pengumuman ini benar."
+                                                                    ."\n2. Pastikan pengumuman yang tertera di sistem ini sama dengan yang akan ditampilkan."
+                                                                    ."\n3. Jika diperlukan, ubahlah pengumuman ini sebelum menyetujuinya.", false),
                                                 'announcement' => $announcement]);
     }
     
@@ -407,7 +408,15 @@ class AnnouncementController extends Controller
         }
         $time_now = Carbon::now()->format('Y-m-d H:i:s');
         // Display all announcements
-        $present_announcements = Announcement::where('date_time', '>', $time_now)->get();
+        $present_announcements = Announcement::where('date_time', '>', $time_now)->orderBy('date_time')->get();
+        foreach ($present_announcements as $announcement) {
+            $announcement->creator_name = $announcement->creator()->first()->name;
+            if ($announcement->approver_id) {
+                $announcement->approver_name = $announcement->approver()->first()->name;
+            } else {
+                $announcement->approver_name = '-';
+            }
+        }
         return view('announcement.approve.index', ['present_announcements' => $present_announcements]);
     }
     
@@ -464,6 +473,7 @@ class AnnouncementController extends Controller
             return redirect('/announcement/approve')->with('error_message', 'Link yang Anda masukkan salah.');
         }
         $announcement = Announcement::where('id', $announcement_id)->first();
+        $announcement->date_time = Carbon::parse($announcement->date_time)->format('m/d/Y g:i A');
         // Invalid URL
         if (!$announcement) {
             return redirect('/announcement/approve')->with('error_message', 'Link yang Anda masukkan salah.');

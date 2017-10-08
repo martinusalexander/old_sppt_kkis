@@ -18,7 +18,7 @@
         <div class="col xs-12 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Buat Media Baru</strong>
+                    <h3><b>Buat Media Baru</b></h3>
                 </div>
                 <form action="/media/create/" role="form" method="POST" class="form-vertical">
                     {{ csrf_field() }}
@@ -28,7 +28,7 @@
                             <input type="text" name="name" id="name" class="form-control">
                         </div>
                         <div class="row form-group center-block">
-                            <label for="organization-name"> Jenis Media: </label>
+                            <label> Jenis Media: </label>
                             <ul id="is-online-ul">
                                 <li class="form-group"><label for="is-online-yes" class="radio-inline"><input type="radio" name="is-online" id="is-online-yes" value="yes" checked> Online </label></li>
                                 <li class="form-group"><label for="is-online-no" class="radio-inline"><input type="radio" name="is-online" id="is-online-no" value="no"> Offline </label></li>

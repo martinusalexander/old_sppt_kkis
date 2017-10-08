@@ -33,23 +33,23 @@
         <div class="col xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Lihat Distribusi</strong>
+                    <h3><b>Lihat Distribusi</b></h3>
                 </div>
                 <div class="panel-body">
-                    <div><h2>Deskripsi Distribusi: </h2></div>
-                    <div><h5> {{ $distribution->description }} </h5></div>
+                    <div><h4><b>Deskripsi Distribusi: </b></h4></div>
+                    <div><h5><b> {{ $distribution->description }} </b></h5></div>
                     <hr>
-                    <div><h2>Media: </h2></div>
+                    <div><h4><b> Media: </b></h4></div>
                     <div>{{ $distribution->media_name }}</div>
                     <hr>
                     @if (!$distribution->is_online)
-                    <div><h2>Waktu: </h2></div>
+                    <div><h4><b> Waktu: </b></h4></div>
                     <div>{{ $distribution->date_time }}</div>
                     <hr>
-                    <div><h2>Deadline: </h2></div>
+                    <div><h4><b> Batas Akhir (Deadline) Pengumpulan Pengumuman: </b></h4></div>
                     <div>{{ $distribution->deadline }}</div>
                     <hr>
-                    <div><h2>Status: </h2></div>
+                    <div><h4><b> Status: </b></h4></div>
                     <div>
                         @if (@$distribution->status === 'FINAL')
                         <span class="label label-danger">
@@ -63,37 +63,55 @@
                     </div>
                     <hr>
                     @endif
-                    <div><h2>Pengumuman: </h2></div>
+                    <div><h4><b> Pengumuman: </b></h4></div>
                     @if (count($announcements) !== 0)
-                    <ol>
+                    <div class="panel-group" id="announcement-per-media">
                         @foreach ($announcements as $announcement)
-                        <li>
-                            <h4>{{ $announcement->title }} </h4>
-                            <pre>{{ $announcement->description }}</pre>
-                            @if ($announcement->image_path !== null)
-                            <img src="{{ $announcement->image_path }}" alt="Gambar tidak dapat dimuat.">
-                            @endif
-                        </li>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                {{ $announcement->title }} 
+                                <span class="pull-right">
+                                    <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#announcement-{{ $loop->index }}"> Lihat </a>
+                                </span>
+                            </div>
+                            <div id="announcement-{{ $loop->index }}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <pre>{{ $announcement->description }}</pre>
+                                    @if ($announcement->image_path !== null)
+                                    <img src="{{ $announcement->image_path }}" alt="Gambar tidak dapat dimuat.">
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                         @endforeach
-                    </ol>
+                    </div>
                     @else
                     <div>Belum ada pengumuman</div>
                     @endif
                     @if (!$distribution->is_online)
                     <hr>
-                    <div><h2>Pengumuman yang Tidak Dapat Ditampilkan: </h2></div>
+                    <div><h4><b>Pengumuman yang Tidak Dapat Ditampilkan: </b></h4></div>
                     @if (count($rejected_announcements) !== 0)
-                    <ol>
+                    <div class="panel-group" id="rejected-announcement-per-media">
                         @foreach ($rejected_announcements as $announcement)
-                        <li>
-                            <h4>{{ $announcement->title }} </h4>
-                            <pre>{{ $announcement->description }}</pre>
-                            @if ($announcement->image_path !== null)
-                            <img src="{{ $announcement->image_path }}" alt="Gambar tidak dapat dimuat.">
-                            @endif
-                        </li>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                {{ $announcement->title }} 
+                                <span class="pull-right">
+                                    <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#rejected-announcement-per-media" href="#rejected-announcement-{{ $loop->index }}"> Lihat </a>
+                                </span>
+                            </div>
+                            <div id="rejected-announcement-{{ $loop->index }}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <pre>{{ $announcement->description }}</pre>
+                                    @if ($announcement->image_path !== null)
+                                    <img src="{{ $announcement->image_path }}" alt="Gambar tidak dapat dimuat.">
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                         @endforeach
-                    </ol>
+                    </div>
                     @else
                     <div>Belum ada pengumuman yang ditolak</div>
                     @endif

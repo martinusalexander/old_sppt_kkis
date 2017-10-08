@@ -26,7 +26,7 @@
         <div class="col xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Atur Distribusi</strong>
+                    <h3><b>Atur Distribusi</b></h3>
                 </div>
                 <div class="panel-body">
                     <div class="row form-group center-block">
@@ -38,7 +38,7 @@
                     </div>
                     @foreach ($online_distributions as $distribution)
                     <div class="row form-group center-block">
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
                             <a class="btn btn-default btn-block" href="/announcementdistribution/manage/{{ $distribution->id }}">
                                 {{ $distribution->description }}
                             </a>
@@ -54,9 +54,18 @@
                     </div>
                     @foreach ($offline_distributions as $distribution)
                     <div class="row form-group center-block">
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
                             <a class="btn btn-default btn-block" href="/announcementdistribution/manage/{{ $distribution->id }}">
-                                {{ $distribution->description }} <br> ({{ $distribution->date_time }})
+                                {{ $distribution->description }} <br> 
+                                ({{ $distribution->date_time }}) <br>
+                                @if (@$distribution->status === 'FINAL')
+                                <span class="label label-danger">
+                                @elseif (@$distribution->status === 'MENERIMA PENGUMUMAN')
+                                <span class="label label-success">
+                                @else
+                                <span class="label label-warning">
+                                @endif
+                                    {{ $distribution->status }}
                             </a>
                         </div>
                     </div>

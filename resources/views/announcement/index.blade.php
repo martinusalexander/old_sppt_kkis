@@ -3,7 +3,7 @@
 @section('title', 'Daftar Pengumuman')
 
 @section('extra_css')
-<style>
+<style>   
     th[name='manage-col'] {
         white-space: nowrap;
         width: 10%;
@@ -30,7 +30,9 @@
 @section('content')
     @include('layout.message')
     <div class="row">
-        <a href="/announcement/create/" class="btn btn-primary" role="button">Buat Pengumuman Baru</a>
+        <div class="form-group">
+            <a href="/announcement/create/" class="btn btn-primary" role="button">Buat Pengumuman Baru</a>
+        </div>
         <table id="announcements-table" class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>

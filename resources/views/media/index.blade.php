@@ -31,7 +31,9 @@
     @include('layout.message')
     <div class="row">
         <div class="col xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
-            <a href="/media/create/" class="btn btn-primary" role="button">Buat Media Baru</a>
+            <div class="form-group">
+                <a href="/media/create/" class="btn btn-primary" role="button">Buat Media Baru</a>
+            </div>
             <table id="media-table" class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr>

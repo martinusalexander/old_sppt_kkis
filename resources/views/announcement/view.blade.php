@@ -19,36 +19,28 @@
 </style>
 @endsection
 
-@section('extra_js')
-<script>
-    $(document).ready(function() {
-        
-    }
-</script>
-@endsection
-
 @section('content')
     @include('layout.message')
     <div class="row">
         <div class="col xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Lihat Pengumuman</strong>
+                    <h3><b>Lihat Pengumuman</b></h3>
                 </div>
                 <div class="panel-body">
-                    <div><h2>Isi Pengumuman: </h2></div>
+                    <div><h4><b>Isi Pengumuman: </b></h4></div>
                     <div><h5><b> {{ $announcement->title }} </b></h5></div>
                     <div><pre> {{ $announcement->description }} </pre></div>
                     <hr>
-                    <div><h2>Waktu: </h2></div>
+                    <div><h4><b>Waktu: </b></h4></div>
                     <div>{{ $announcement->date_time }}</div>
                     @if ($announcement->image_path !== null)
                     <hr>
-                    <div><h2>Gambar Pendukung: </h2></div>
+                    <div><h4><b>Gambar Pendukung: </b></h4></div>
                     <img src="{{ $announcement->image_path }}" alt="Gambar tidak dapat dimuat.">
                     @endif
                     <hr>
-                    <div><h2>Isi Pengumuman Tiap Media: </h2></div>
+                    <div><h4><b> Isi Pengumuman Tiap Media: </b></h4></div>
                     @if ($announcement->rotating_slide !== null ||
                          $announcement->mass_announcement !== null ||
                          $announcement->flyer !== null ||
@@ -61,13 +53,20 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#announcement-per-media" href="#rotating-slide">Rotating slide sebelum misa (klik untuk melihat)</a>
+                                    Rotating slide sebelum misa
+                                    <span class="pull-right">
+                                        <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#rotating-slide"> Lihat </a>
+                                    </span>
                                 </h4>
                             </div>
                             <div id="rotating-slide" class="panel-collapse collapse">
+                                <div class="panel-body">
                                 @if ($announcement->image_path !== null)
-                                <div class="panel-body"><img src="{{ $announcement->image_path }}" alt="Gambar tidak dapat dimuat."></div>
+                                <img src="{{ $announcement->image_path }}" alt="Gambar tidak dapat dimuat.">
+                                @else
+                                Tidak ada gambar.
                                 @endif
+                                </div>
                             </div>
                         </div>
                         @endif
@@ -75,7 +74,10 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#announcement-per-media" href="#mass-announcement">Pengumuman Misa (klik untuk melihat)</a>
+                                    Pengumuman Misa
+                                    <span class="pull-right">
+                                        <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#mass-announcement"> Lihat </a>
+                                    </span>
                                 </h4>
                             </div>
                             <div id="mass-announcement" class="panel-collapse collapse">
@@ -92,22 +94,30 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#announcement-per-media" href="#flyer">Flyer (klik untuk melihat)</a>
+                                    Flyer
+                                    <span class="pull-right">
+                                        <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#flyer"> Lihat </a>
+                                    </span>
                                 </h4>
                             </div>
                             <div id="flyer" class="panel-collapse collapse">
+                                <div class="panel-body">
                                 @if ($announcement->image_path !== null)
                                 <img src="{{ $announcement->image_path }}" alt="Gambar tidak dapat dimuat.">
+                                @else
+                                Tidak ada gambar.
                                 @endif
+                                </div>
                             </div>
                         </div>
                         @endif
                         @if ($announcement->bulletin !== null)
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#announcement-per-media" href="#bulletin">Bulletin Dombaku (klik untuk melihat)</a>
-                                </h4>
+                                Bulletin Dombaku
+                                <span class="pull-right">
+                                    <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#bulletin"> Lihat </a>
+                                </span>
                             </div>
                             <div id="bulletin" class="panel-collapse collapse">
                                 <div class="panel-body">
@@ -119,9 +129,10 @@
                         @if ($announcement->website !== null)
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#announcement-per-media" href="#website">Website KKIS (klik untuk melihat)</a>
-                                </h4>
+                                Website KKIS
+                                <span class="pull-right">
+                                    <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#website"> Lihat </a>
+                                </span>
                             </div>
                             <div id="website" class="panel-collapse collapse">
                                 <div class="panel-body">
@@ -137,9 +148,10 @@
                         @if ($announcement->facebook !== null)
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#announcement-per-media" href="#facebook">Facebook (klik untuk melihat)</a>
-                                </h4>
+                                Facebook
+                                <span class="pull-right">
+                                    <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#facebook"> Lihat </a>
+                                </span>
                             </div>
                             <div id="facebook" class="panel-collapse collapse">
                                 <div class="panel-body">
@@ -155,9 +167,10 @@
                         @if ($announcement->instagram !== null)
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#announcement-per-media" href="#instagram">Instagram (klik untuk melihat)</a>
-                                </h4>
+                                Instagram
+                                <span class="pull-right">
+                                    <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#instagram"> Lihat </a>
+                                </span>
                             </div>
                             <div id="instagram" class="panel-collapse collapse">
                                 <div class="panel-body">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Auth;
 use Carbon\Carbon;
 use App\AnnouncementDistribution;
@@ -35,8 +36,9 @@ class DistributionController extends Controller
             return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
         }
         $now = Carbon::now();
+        $ten_days_before = $now->subDays(10);
         $offline_media_ids = Media::where('is_online', false)->pluck('id')->toArray();
-        $offline_distributions = Distribution::where('date_time', '>', $now)->whereIn('media_id', $offline_media_ids)->get();
+        $offline_distributions = Distribution::where('date_time', '>', $ten_days_before)->whereIn('media_id', $offline_media_ids)->orderBy('date_time')->get();
         foreach ($offline_distributions as $distribution) {
             $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
             $distribution->deadline = Carbon::parse($distribution->deadline)->format('l, j F Y, g:i a');
@@ -53,7 +55,7 @@ class DistributionController extends Controller
             }
         }
         $online_media_ids = Media::where('is_online', true)->pluck('id')->toArray();
-        $online_distributions = Distribution::whereIn('media_id', $online_media_ids)->get();
+        $online_distributions = Distribution::whereIn('media_id', $online_media_ids)->orderBy('description')->get();
         return view('distribution.index', ['offline_distributions' => $offline_distributions,
                                            'online_distributions' => $online_distributions]);
     }
@@ -226,6 +228,8 @@ class DistributionController extends Controller
             if ($distribution->media()->first()->is_online) {
                 return redirect('/distribution')->with('error_message', 'Anda tidak diperbolehkan mengubah distribusi yang menggunakan media tersebut.');
             }
+            $distribution->date_time = Carbon::parse($distribution->date_time)->format('m/d/Y g:i A');
+            $distribution->deadline = Carbon::parse($distribution->deadline)->format('m/d/Y g:i A');
             $media = Media::where('is_online', false)->get();
             return view('distribution.edit', ['distribution' => $distribution, 'media' => $media]);
         } else {

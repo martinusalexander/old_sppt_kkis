@@ -14,15 +14,11 @@
     th[name='title-col'] {
         width: 25%;
     }
-    th[name='description-col'] {
-        width: 60%;
+    th[name='creator-col'] {
+        width: 30%;
     }
-    
-    pre {
-        border: 0;
-        background-color: transparent;
-        padding: 0;
-        margin: 0;
+    th[name='approver-col'] {
+        width: 30%;
     }
 </style>
 @endsection
@@ -30,12 +26,16 @@
 @section('content')
     @include('layout.message')
     <div class="row">
+        <div>
+            <h3>Setujui (dan Revisi) Pengumuman</h3>
+        </div>
         <table id="announcements-table" class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
                     <th name="no-col"> No.</th>
                     <th name="title-col"> Judul </th>
-                    <th name="description-col"class="hidden-xs"> Deskripsi </th>
+                    <th name="creator-col"> Pembuat </th>
+                    <th name="approver-col"> Pemberi Persetujuan </th>
                     <th name="admin-col"> Khusus Manajer dan Admin </th>
                 </tr>
             </thead>
@@ -44,11 +44,12 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $announcement->title }}</td>
-                    <td class="hidden-xs" name="manage-col"><pre>{{ $announcement->description }}</pre></td>
+                    <td name="creator-col">{{ $announcement->creator_name }}</td>
+                    <td name="approver-col">{{ $announcement->approver_name }}</td>
                     <td>
                         <div class="list-group">
                             @if (!$announcement->is_approved) 
-                            <a class="list-group-item list-group-item-info" href="/announcement/approve/view/{{ $announcement->id }}"> Lihat Sebelum Persetujuan </a>
+                            <a class="list-group-item list-group-item-info" href="/announcement/approve/view/{{ $announcement->id }}"> Tinjau Sebelum Persetujuan </a>
                             @else
                             <a class="list-group-item list-group-item-success" href="#" disabled> Telah Disetujui </a>
                             @endif

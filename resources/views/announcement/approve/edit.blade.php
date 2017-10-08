@@ -157,6 +157,11 @@
                 $("#instagram").val($("#description").val());
             }
         });
+        $('#datetimepicker').datetimepicker({
+            useCurrent: false,
+            sideBySide: true,
+            useStrict: true,
+        });
     });
 </script>
 @endsection
@@ -167,7 +172,7 @@
         <div class="col xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Ubah Pengumuman sebelum Persetujuan</strong>
+                    <h3><b>Ubah Pengumuman sebelum Persetujuan</b></h3>
                 </div>
                 <form action="/announcement/approve/confirm/" role="form" method="POST" enctype="multipart/form-data" class="form-vertical">
                     {{ csrf_field() }}
@@ -178,12 +183,17 @@
                             <input type="text" name="title" id="title" class="form-control" value="{{ $announcement->title }}">
                         </div>
                         <div class="row form-group center-block">
-                            <label for="title"> Deskripsi: </label>
+                            <label for="descrption"> Deskripsi: </label>
                             <textarea name="description" id="description" class="form-control" rows="5">{{ $announcement->description }}</textarea>
                         </div>
                         <div class="row form-group center-block">
-                            <label for="title"> Waktu: <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#date-time-modal">Info</button></label>
-                            <input type="datetime-local" name="date-time" id="date-time" class="form-control" value="{{ $announcement->date_time }}">
+                            <label> Waktu: <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#date-time-modal">Info</button></label>
+                            <div class='input-group date' id='datetimepicker'>
+                                <input type='text' class="form-control" name="date-time" id="date-time" value="{{ $announcement->date_time }}">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
                             <div class="modal fade" id="date-time-modal" role="dialog">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -193,6 +203,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <p>Bagian ini diisi dengan waktu kegiatan Anda.</p>
+                                            <p><b>Penting:</b> Bagian ini digunakan untuk keperluan pengelolaan oleh komputer. Anda perlu menyebutkan waktu kegiatan Anda dalam deskripsi kegiatan.</p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -203,7 +214,7 @@
                         </div>
                         <hr>
                         <div class="row form-group center-block">
-                            <label for="title"> Gambar Pendukung (contoh: flyer kegiatan): <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#image-modal">Info</button></label>
+                            <label> Gambar Pendukung (contoh: flyer kegiatan): <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#image-modal">Info</button></label>
                             <ul id="image-ul">
                                 <li class="form-group">
                                     <label for="image-keep" class="radio-inline"><input type="radio" name="image" id="image-keep" value="keep" checked> Gunakan file sebelumnya </label>

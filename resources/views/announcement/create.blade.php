@@ -117,6 +117,10 @@
                 $("#instagram").val($("#description").val());
             }
         });
+        $('#datetimepicker').datetimepicker({
+            sideBySide: true,
+            useStrict: true,
+        });
     });
 </script>
 @endsection
@@ -127,7 +131,7 @@
         <div class="col xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Form Pengumuman Baru</strong>
+                    <h3><b>Form Pengumuman Baru</b></h3>
                 </div>
                 <form action="/announcement/create" role="form" method="POST" enctype="multipart/form-data" class="form-vertical">
                     {{ csrf_field() }}
@@ -137,12 +141,17 @@
                             <input type="text" name="title" id="title" class="form-control">
                         </div>
                         <div class="row form-group center-block">
-                            <label for="title"> Deskripsi: </label>
+                            <label for="description"> Deskripsi: </label>
                             <textarea name="description" id="description" class="form-control" rows="5"></textarea>
                         </div>
                         <div class="row form-group center-block">
-                            <label for="title"> Waktu: <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#date-time-modal">Info</button></label>
-                            <input type="datetime-local" name="date-time" id="date-time" class="form-control">
+                            <label> Waktu: <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#date-time-modal">Info</button></label>
+                            <div class='input-group date' id='datetimepicker'>
+                                <input type='text' class="form-control" name="date-time" id="date-time">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
                             <div class="modal fade" id="date-time-modal" role="dialog">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -152,6 +161,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <p>Bagian ini diisi dengan waktu kegiatan Anda.</p>
+                                            <p><b>Penting:</b> Bagian ini digunakan untuk keperluan pengelolaan oleh komputer. Anda perlu menyebutkan waktu kegiatan Anda dalam deskripsi kegiatan.</p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -161,7 +171,7 @@
                             </div>
                         </div>
                         <div class="row form-group center-block">
-                            <label for="title"> Gambar Pendukung (contoh: flyer kegiatan): <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#image-modal">Info</button></label>
+                            <label for="image-path"> Gambar Pendukung (contoh: flyer kegiatan): <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#image-modal">Info</button></label>
                             <input type="file" name="image-path" id="image-path" class="form-control"></input>
                             <div class="modal fade" id="image-modal" role="dialog">
                                 <div class="modal-dialog">
@@ -226,7 +236,7 @@
                                     <div class="form-group" id="mass-announcement-div">
                                         <div  class="col-xs-11 col-xs-offset-1 col-sm-11 col-md-offset-1 col-md-11 col-md-offset-1 col-lg-11 col-lg-offset-1">
                                             <div class="form-group">
-                                                <label class="checkbox" for="custom-mass-announcement"><input type="checkbox" id="custom-mass-announcement"> Gunakan deskripsi tersendiri untuk pengumuman misa (sebelum berkat penutup)  </label>
+                                                <label class="checkbox" for="custom-mass-announcement"><input type="checkbox" id="custom-mass-announcement"> (Opsional) Gunakan deskripsi berbeda untuk pengumuman misa </label>
                                             </div>
                                             <div class="form-group">
                                                 <textarea name="mass-announcement" id="mass-announcement" class="form-control" rows="5" readonly></textarea>
@@ -250,7 +260,7 @@
                                     <div class="form-group" id="bulletin-div">
                                         <div  class="col-xs-11 col-xs-offset-1 col-sm-11 col-md-offset-1 col-md-11 col-md-offset-1 col-lg-11 col-lg-offset-1">
                                             <div class="form-group">
-                                                <label class="checkbox" for="custom-bulletin"><input type="checkbox" id="custom-bulletin"> Gunakan deskripsi tersendiri untuk bulletin Dombaku </label>
+                                                <label class="checkbox" for="custom-bulletin"><input type="checkbox" id="custom-bulletin"> (Opsional) Gunakan deskripsi berbeda untuk bulletin Dombaku </label>
                                             </div>
                                             <div class="form-group">
                                                 <textarea name="bulletin" id="bulletin" class="form-control" rows="5" readonly></textarea>
@@ -267,7 +277,7 @@
                                     <div class="form-group" id="website-div">
                                         <div  class="col-xs-11 col-xs-offset-1 col-sm-11 col-md-offset-1 col-md-11 col-md-offset-1 col-lg-11 col-lg-offset-1">
                                             <div class="form-group">
-                                                <label class="checkbox" for="custom-website"><input type="checkbox" id="custom-website"> Gunakan deskripsi tersendiri untuk website KKIS </label>
+                                                <label class="checkbox" for="custom-website"><input type="checkbox" id="custom-website"> (Opsional) Gunakan deskripsi berbeda untuk website KKIS </label>
                                             </div>
                                             <div class="form-group">
                                                 <textarea name="website" id="website" class="form-control" rows="5" readonly></textarea>
@@ -284,7 +294,7 @@
                                     <div class="form-group" id="facebook-div">
                                         <div  class="col-xs-11 col-xs-offset-1 col-sm-11 col-md-offset-1 col-md-11 col-md-offset-1 col-lg-11 col-lg-offset-1">
                                             <div class="form-group">
-                                                <label class="checkbox" for="custom-facebook"><input type="checkbox" id="custom-facebook"> Gunakan deskripsi tersendiri untuk Facebook </label>
+                                                <label class="checkbox" for="custom-facebook"><input type="checkbox" id="custom-facebook"> (Opsional) Gunakan deskripsi berbeda untuk Facebook </label>
                                             </div>
                                             <div class="form-group">
                                                 <textarea name="facebook" id="facebook" class="form-control" rows="5" readonly></textarea>
@@ -301,7 +311,7 @@
                                     <div class="form-group" id="instagram-div">
                                         <div  class="col-xs-11 col-xs-offset-1 col-sm-11 col-md-offset-1 col-md-11 col-md-offset-1 col-lg-11 col-lg-offset-1">
                                             <div class="form-group">
-                                                <label class="checkbox" for="custom-instagram"><input type="checkbox" id="custom-instagram"> Gunakan deskripsi tersendiri untuk Instagram </label>
+                                                <label class="checkbox" for="custom-instagram"><input type="checkbox" id="custom-instagram"> (Opsional) Gunakan deskripsi berbeda untuk Instagram </label>
                                             </div>
                                             <div class="form-group">
                                                 <textarea name="instagram" id="instagram" class="form-control" rows="5" readonly></textarea>

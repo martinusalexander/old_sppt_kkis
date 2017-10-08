@@ -185,15 +185,22 @@ class AnnouncementDistributionController extends Controller
     public function view(Request $request, $distribution_id = null) {
         // Normal user is not allowed to access this page
         $user = Auth::user();
-        if (!$user->is_distributor && !$user->is_manager && !$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
-        }
         if ($distribution_id === null) {
             $now = Carbon::now();
             $offline_media_ids = Media::where('is_online', false)->pluck('id')->toArray();
             $offline_distributions = Distribution::where('date_time', '>', $now)->whereIn('media_id', $offline_media_ids)->orderBy('date_time')->get();
             foreach ($offline_distributions as $distribution) {
                 $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
+                $deadline = Carbon::parse($distribution->deadline);
+                $now = Carbon::now();
+                $now_to_deadline_diff = $now->diffInSeconds($deadline, false);
+                if ($now_to_deadline_diff < 0) {
+                    $distribution->status = 'FINAL';
+                } else if (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
+                    $distribution->status = 'MENDEKATI BATAS AKHIR (DEADLINE)';
+                } else {
+                    $distribution->status = 'MENERIMA PENGUMUMAN';
+                }
             }
             $online_media_ids = Media::where('is_online', true)->pluck('id')->toArray();
             $online_distributions = Distribution::whereIn('media_id', $online_media_ids)->orderBy('description')->get();
@@ -265,11 +272,21 @@ class AnnouncementDistributionController extends Controller
             return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
         }
         if ($distribution_id === null) {
-            $now = Carbon::now();
+            $ten_days_before = Carbon::now()->subDays(10);
             $offline_media_ids = Media::where('is_online', false)->pluck('id')->toArray();
-            $offline_distributions = Distribution::where('date_time', '>', $now)->whereIn('media_id', $offline_media_ids)->orderBy('date_time')->get();
+            $offline_distributions = Distribution::where('date_time', '>', $ten_days_before)->whereIn('media_id', $offline_media_ids)->orderBy('date_time')->get();
             foreach ($offline_distributions as $distribution) {
                 $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
+                $deadline = Carbon::parse($distribution->deadline);
+                $now = Carbon::now();
+                $now_to_deadline_diff = $now->diffInSeconds($deadline, false);
+                if ($now_to_deadline_diff < 0) {
+                    $distribution->status = 'FINAL';
+                } else if (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
+                    $distribution->status = 'MENDEKATI BATAS AKHIR (DEADLINE)';
+                } else {
+                    $distribution->status = 'MENERIMA PENGUMUMAN';
+                }
             }
             $online_media_ids = Media::where('is_online', true)->pluck('id')->toArray();
             $online_distributions = Distribution::whereIn('media_id', $online_media_ids)->orderBy('description')->get();
@@ -306,6 +323,7 @@ class AnnouncementDistributionController extends Controller
                     $revision->image_path = Storage::url($revision->image_path);
                 }
                 $revision->description = $revision->get_description_by_media_name($media_name);
+                $revision->creator_name = $revision->announcement()->first()->creator()->first()->name;
                 array_push($announcements, $revision);
             }
             $rejected_announcements = array();
@@ -319,6 +337,7 @@ class AnnouncementDistributionController extends Controller
                     $revision->image_path = Storage::url($revision->image_path);
                 }
                 $revision->description = $revision->get_description_by_media_name($media_name);
+                $revision->creator_name = $revision->announcement()->first()->creator()->first()->name;
                 array_push($rejected_announcements, $revision);
             }
             return view('announcementdistribution.manage.announcements', ['distribution' => $distribution,

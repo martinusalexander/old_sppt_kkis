@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('layout.base', ['hide_menu' => true])
 
 @section('title', 'Login')
 
@@ -8,7 +8,7 @@
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Login</strong>
+                    <h3><b>Login</b></h3>
                 </div>
                 <div class="panel-body">
                     <form action="/login/" role="form" method="POST" class="form-vertical">
@@ -39,7 +39,7 @@
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Daftar</strong>
+                    <h3><b>Daftar</b></h3>
                 </div>
                 <div class="panel-body">
                     <form name="register-form" action="/register/" role="form" method="POST" class="form-vertical" onsubmit="return validateForm()">

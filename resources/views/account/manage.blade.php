@@ -31,6 +31,9 @@
 @section('content')
     @include('layout.message')
     <div class="row">
+        <div>
+            <h3><b> Kelola Akun </b></h3>
+        </div>
         <table id="account-management-table" class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
@@ -51,7 +54,7 @@
                     <td>
                         @if ($account->is_distributor)
                         <div class="text-center">&#x2714;</div> 
-                        @if ($account->id !=== $user->id)
+                        @if ($account->id !== $user->id)
                         <a class="btn btn-danger" href="/accountmanagement/set/distributor/{{ $account->id }}" onclick="return confirm('Apakah Anda yakin menurunkan user ini dari distributor?');"> Turunkan dari Distributor </a>
                         @endif
                         @else 
