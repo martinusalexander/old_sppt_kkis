@@ -285,7 +285,7 @@ class UserController extends Controller
             ]);
         } else {
             // Admin
-            $previous_condition = $user->is_manager;
+            $previous_condition = $user->is_admin;
             User::where('id', $user_id)->update([
                 'is_admin' => !$previous_condition,
             ]);

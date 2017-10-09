@@ -129,7 +129,11 @@ class AnnouncementDistributionController extends Controller
             }
             foreach ($online_media as $media) {
                 foreach ($admins_and_managers as $user) {
-                    $image_path = storage_path('/app/'.$announcement->image_path);
+                    if ($announcement->image_path !== null) {
+                        $image_path = storage_path('/app/'.$announcement->image_path);
+                    } else {
+                        $image_path = null;
+                    }
                     Mail::to($user)->send(new UpdateAnnouncementDistribution($user, $creator_name, $action, $media, 
                                                                              $announcement->title, $announcement->description, 
                                                                              $date_time, $image_path));

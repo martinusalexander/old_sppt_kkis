@@ -116,10 +116,12 @@
                         @if ($announcement->bulletin !== null)
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Bulletin Dombaku
-                                <span class="pull-right">
-                                    <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#bulletin"> Lihat </a>
-                                </span>
+                                <h4 class="panel-title">
+                                    Bulletin Dombaku
+                                    <span class="pull-right">
+                                        <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#bulletin"> Lihat </a>
+                                    </span>
+                                </h4>
                             </div>
                             <div id="bulletin" class="panel-collapse collapse">
                                 <div class="panel-body">
@@ -131,10 +133,12 @@
                         @if ($announcement->website !== null)
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Website KKIS
-                                <span class="pull-right">
-                                    <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#website"> Lihat </a>
-                                </span>
+                                <h4 class="panel-title">
+                                    Website KKIS
+                                    <span class="pull-right">
+                                        <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#website"> Lihat </a>
+                                    </span>
+                                </h4>
                             </div>
                             <div id="website" class="panel-collapse collapse">
                                 <div class="panel-body">
@@ -149,10 +153,12 @@
                         @if ($announcement->facebook !== null)
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Facebook
-                                <span class="pull-right">
-                                    <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#facebook"> Lihat </a>
-                                </span>
+                                <h4 class="panel-title">
+                                    Facebook
+                                    <span class="pull-right">
+                                        <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#facebook"> Lihat </a>
+                                    </span>
+                                </h4>
                             </div>
                             <div id="facebook" class="panel-collapse collapse">
                                 <div class="panel-body">
@@ -168,10 +174,12 @@
                         @if ($announcement->instagram !== null)
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Instagram
-                                <span class="pull-right">
-                                    <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#instagram"> Lihat </a>
-                                </span>
+                                <h4 class="panel-title">
+                                    Instagram
+                                    <span class="pull-right">
+                                        <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#instagram"> Lihat </a>
+                                    </span>
+                                </h4>
                             </div>
                             <div id="instagram" class="panel-collapse collapse">
                                 <div class="panel-body">

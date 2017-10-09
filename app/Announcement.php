@@ -22,7 +22,7 @@ class Announcement extends Model
     protected $fillable = [
         'title', 'description', 'date_time', 'is_routine', 
         'image_path', 'rotating_slide', 'mass_announcement', 
-        'flyer', 'bulletin', 'facebook', 'instagram', 
+        'flyer', 'bulletin', 'website', 'facebook', 'instagram', 
         'creator_id',
     ];
     
