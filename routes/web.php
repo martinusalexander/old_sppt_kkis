@@ -70,6 +70,8 @@ Route::match(['get'], '/announcementdistribution/manage', 'AnnouncementDistribut
 Route::match(['get'], '/announcementdistribution/manage/{distribution_id}', 'AnnouncementDistributionController@manage');
 Route::match(['get'], '/announcementdistribution/update/{announcement_distribution_id}', 'AnnouncementDistributionController@update_to_latest_version');
 Route::match(['get'], '/announcementdistribution/reject/{announcement_distribution_id}', 'AnnouncementDistributionController@reject');
+Route::match(['get'], '/announcementdistribution/download', 'AnnouncementDistributionController@download');
+Route::match(['get'], '/announcementdistribution/download/{distribution_id}', 'AnnouncementDistributionController@download');
 
 // Account management related urls
 Route::match(['get'], '/accountmanagement', 'UserController@manage');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use ZipArchive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
@@ -481,5 +482,83 @@ class AnnouncementDistributionController extends Controller
             $success_message = 'Pengumuman yang sebelumnya ditolak tersebut telah dimasukkan kembali dalam distribusi ini.';
         }
         return redirect('/announcementdistribution/manage/'.$announcement_distribution->distribution_id, 303)->with('success_message', $success_message);
+    }
+    
+    /**
+     * Display the manage announcement in distribution page
+     * 
+     * @param Request $request
+     * @param $distribution_id
+     * @return ZipFile
+     */
+    public function download(Request $request, $distribution_id = null) {
+        // Normal user is not allowed to access this page
+        $user = Auth::user();
+        if (!$user->is_distributor && !$user->is_manager && !$user->is_admin) {
+            abort(403);
+        }
+        if ($distribution_id === null) {
+            $now = Carbon::now();
+            $distributions = Distribution::where('deadline', '<', $now->format('Y-m-d H:i:s'))
+                                         ->where('date_time', '>', $now->subDays(21)->format('Y-m-d H:i:s'))
+                                         ->get();
+            foreach ($distributions as $distribution) {
+                $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
+            }
+            return view('announcementdistribution.download.download', ['distributions' => $distributions]);
+        } else {
+            $distribution = Distribution::where('id', $distribution_id)->first();
+            if (!$distribution) {
+                abort(404);
+            }
+            $now = Carbon::now();
+            $allow_download_distributions = Distribution::where('deadline', '<', $now->format('Y-m-d H:i:s'))
+                                                        ->where('date_time', '>', $now->subDays(21)->format('Y-m-d H:i:s'))
+                                                        ->pluck('id')->toArray();
+            // Distributions that cannot be downloaded yet
+            if (!in_array($distribution_id, $allow_download_distributions)) {
+                abort(403);
+            }
+            $script = $distribution->description.' ('.Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a').')'."\n";
+            $media_name = $distribution->media()->first()->name;
+            $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
+                                                                 ->where('is_rejected', false)
+                                                                 ->get();
+            // Collect the announcements data
+            $i = 0;
+            $image_path_array = array();
+            foreach ($announcement_distributions as $announcement_distribution) {
+                $i++;
+                $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)
+                                    ->where('revision_no', $announcement_distribution->revision_no)
+                                    ->first();
+                $script .= $i.'. '.$revision->title."\n";
+                $script .= $revision->get_description_by_media_name($media_name)."\n\n";
+                if ($revision->image_path !== null) {
+                    $image_path = storage_path('app/'.$revision->image_path);
+                    array_push($image_path_array, $image_path);
+                }
+                
+            }
+            try {
+                // Create a ZIP file
+                $zip_filename = storage_path('app/public/announcement/announcements.zip');
+                $zip = new ZipArchive();
+                if ($zip->open($zip_filename, ZipArchive::CREATE)) {
+                    // Put the files
+                    $zip->addFromString("teks_pengumuman.txt", $script);
+                    foreach ($image_path_array as $image_path) {
+                        $zip->addFile($image_path, basename($image_path));
+                    }
+                    $zip->close();
+                } else {
+                    abort(500);
+                }
+                // Delete script file
+                return response()->download($zip_filename)->deleteFileAfterSend(true);
+            } catch (Exception $e) {
+                abort(500);
+            }
+        }
     }
 }
