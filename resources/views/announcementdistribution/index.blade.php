@@ -13,7 +13,6 @@
       height: 0px;
       line-height: 0px;
     }
-
     .hr-title {
       background-color: #fff;
     }
@@ -66,7 +65,7 @@
                                 @else
                                 <span class="label label-warning">
                                 @endif
-                                    {{ $distribution->status }}
+                                {{ $distribution->status }}
                                 </span>
                             </a>
                         </div>

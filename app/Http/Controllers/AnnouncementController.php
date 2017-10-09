@@ -17,8 +17,7 @@ class AnnouncementController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
     }
     
@@ -139,7 +138,6 @@ class AnnouncementController extends Controller
             ]);
             return redirect('/announcement/')->with('success_message', 'Pengumuman Anda telah berhasil dibuat.');
         }
-        
     }
     
     /**
@@ -183,7 +181,7 @@ class AnnouncementController extends Controller
             $date_time = Carbon::parse($date_time)->format('Y-m-d H:i:s');
             if ($request->input('image') === 'keep') {
                 $image_path = Announcement::where('id', $id)->first()->image_path;
-            } else if ($request->input('image') === 'change') {
+            } elseif ($request->input('image') === 'change') {
                 if ($request->hasFile('image-path')) {
                     $image = $request->file('image-path');
                     $image_path = Storage::put('public/images', $image, 'public');
@@ -391,7 +389,7 @@ class AnnouncementController extends Controller
                                                                     ."\n1. Pastikan informasi dalam pengumuman ini benar."
                                                                     ."\n2. Pastikan pengumuman yang tertera di sistem ini sama dengan yang akan ditampilkan."
                                                                     ."\n3. Jika diperlukan, ubahlah pengumuman ini sebelum menyetujuinya.", false),
-                                                'announcement' => $announcement]);
+                                                  'announcement' => $announcement]);
     }
     
     /**
@@ -501,7 +499,7 @@ class AnnouncementController extends Controller
         $date_time = Carbon::parse($date_time)->format('Y-m-d H:i:s');
         if ($request->input('image') === 'keep') {
             $image_path = Announcement::where('id', $id)->first()->image_path;
-        } else if ($request->input('image') === 'change') {
+        } elseif ($request->input('image') === 'change') {
             if ($request->hasFile('image-path')) {
                 $image = $request->file('image-path');
                 $image_path = Storage::put('public/images', $image, 'public');
@@ -598,6 +596,4 @@ class AnnouncementController extends Controller
         (new AnnouncementDistributionController)->update($update_announcement_distribution_details);
         return redirect('/announcement/approve')->with('success_message', 'Pengumuman telah berhasil diubah dan disetujui.');
     }
-    
-    
 }

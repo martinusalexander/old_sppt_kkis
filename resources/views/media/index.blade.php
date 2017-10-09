@@ -17,7 +17,6 @@
     th[name='online-col'] {
         width: 15%;
     }
-    
     pre {
         border: 0;
         background-color: transparent;

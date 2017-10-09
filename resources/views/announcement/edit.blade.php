@@ -4,16 +4,15 @@
 
 @section('extra_css')
 <style>
-#is-routine-ul, #media-distribution-ul,
-#image-ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-#new-image-div {
-    display: none;
-}
+    #is-routine-ul, #media-distribution-ul,
+    #image-ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    #new-image-div {
+        display: none;
+    }
 </style>
 @endsection
 
@@ -374,8 +373,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                                    
+                                </li>    
                             </ul>
                             <div class="modal fade" id="media-distribution-modal" role="dialog">
                                 <div class="modal-dialog">

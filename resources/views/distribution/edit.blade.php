@@ -61,7 +61,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        
                         <div class="row form-group center-block"> 
                             <button type="submit" class="btn btn-default"> Ubah </button>
                         </div>

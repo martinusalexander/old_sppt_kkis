@@ -4,17 +4,16 @@
 
 @section('extra_css')
 <style>
-#is-routine-ul, #media-distribution-ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-#rotating-slide-div, #mass-announcement-div,
-#bulletin-div, #website-div, #facebook-div, 
-#instagram-div {
-    display: none;
-}
+    #is-routine-ul, #media-distribution-ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    #rotating-slide-div, #mass-announcement-div,
+    #bulletin-div, #website-div, #facebook-div, 
+    #instagram-div {
+        display: none;
+    }
 </style>
 @endsection
 
@@ -182,7 +181,9 @@
                                         </div>
                                         <div class="modal-body">
                                             <p>Bagian ini diisi dengan gambar pendukung pengumuman/kegiatan Anda.</p>
-                                            <ul><li>Gambar pendukung ini mungkin akan ditampilkan dalam berbagai media distribusi pengumuman seperti rotating slide, pengumuman misa, Facebook dan Instagram</li></ul>
+                                            <ul>
+                                                <li>Gambar pendukung ini mungkin akan ditampilkan dalam berbagai media distribusi pengumuman seperti rotating slide, pengumuman misa, Facebook dan Instagram</li>
+                                            </ul>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -207,7 +208,9 @@
                                         </div>
                                         <div class="modal-body">
                                             <p>Bagian ini diisi dengan frekwensi pengumuman/kegiatan Anda (rutin atau tidaknya pengumuman/kegiatan Anda).</p>
-                                            <ul><li>Kegiatan tidak rutin (misalnya kegiatan untuk maksud tertentu (ad-hoc) atau kegiatan tahunan) akan mendapat prioritas lebih tinggi dan jangka waktu distribusi lebih panjang.</li></ul>
+                                            <ul>
+                                                <li>Kegiatan tidak rutin (misalnya kegiatan untuk maksud tertentu (ad-hoc) atau kegiatan tahunan) akan mendapat prioritas lebih tinggi dan jangka waktu distribusi lebih panjang.</li>
+                                            </ul>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -318,8 +321,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                                    
+                                </li>   
                             </ul>
                             <div class="modal fade" id="media-distribution-modal" role="dialog">
                                 <div class="modal-dialog">

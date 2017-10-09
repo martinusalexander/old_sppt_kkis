@@ -10,21 +10,12 @@
         padding: 0;
         margin: 0;
     }
-    
     img {
         display: block;
         margin: auto;
         width: 50%; 
     }
 </style>
-@endsection
-
-@section('extra_js')
-<script>
-    $(document).ready(function() {
-        
-    }
-</script>
 @endsection
 
 @section('content')

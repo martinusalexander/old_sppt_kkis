@@ -13,7 +13,6 @@
       height: 0px;
       line-height: 0px;
     }
-
     .hr-title {
       background-color: #fff;
     }
@@ -32,14 +31,14 @@
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/announcement/">
-                            Buat/Ubah/Hapus Pengumuman
+                                Buat/Ubah/Hapus Pengumuman
                             </a>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/announcementdistribution/">
-                            Lihat Seluruh Pengumuman
+                                Lihat Seluruh Pengumuman
                             </a>
                         </div>
                     </div>
@@ -53,21 +52,21 @@
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/updateprofile/">
-                            Ubah Profil
+                                Ubah Profil
                             </a>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/changepassword/">
-                            Ubah Password
+                                Ubah Password
                             </a>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/logout/">
-                            Logout
+                                Logout
                             </a>
                         </div>
                     </div>
@@ -84,21 +83,21 @@
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/distribution/">
-                            Buat/Ubah/Hapus Distribusi
+                                Buat/Ubah/Hapus Distribusi
                             </a>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/announcementdistribution/manage">
-                            Kelola Pengumuman dalam Distribusi
+                                Kelola Pengumuman dalam Distribusi
                             </a>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/announcementdistribution/download">
-                            Unduh Pengumuman per Distribusi
+                                Unduh Pengumuman per Distribusi
                             </a>
                         </div>
                     </div>
@@ -116,7 +115,7 @@
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/announcement/approve">
-                            Setujui (dan Revisi) Pengumuman
+                                Setujui (dan Revisi) Pengumuman
                             </a>
                         </div>
                     </div>
@@ -134,14 +133,14 @@
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/media/">
-                            Buat/Ubah/Hapus Media
+                                Buat/Ubah/Hapus Media
                             </a>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <a class="btn btn-default btn-block" href="/accountmanagement/">
-                            Kelola Akun
+                                Kelola Akun
                             </a>
                         </div>
                     </div>

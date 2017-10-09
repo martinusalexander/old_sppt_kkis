@@ -42,7 +42,9 @@ class AnnouncementDistributionController extends Controller
             if ($action === 'EDIT_ANNOUNCEMENT') {
                 $old_announcement = $details['old_announcement'];
                 $new_announcement = $details['new_announcement'];
-                $not_deadline_ids = Distribution::where('deadline', '>', $now->format('Y-m-d H:i:s'))->pluck('id')->toArray();
+                $not_deadline_ids = Distribution::where('deadline', '>', $now->format('Y-m-d H:i:s'))
+                                                ->pluck('id')
+                                                ->toArray();
                 AnnouncementDistribution::where('announcement_id', $old_announcement->id)
                                         ->whereIn('distribution_id', $not_deadline_ids)
                                         ->delete();
@@ -108,15 +110,15 @@ class AnnouncementDistributionController extends Controller
             }
             foreach ($online_media as $media) {
                 foreach ($admins_and_managers as $user) {
-                    Mail::to($user)->send(new UpdateAnnouncementDistribution($user, $creator_name, $action, $media, $announcement->title,
-                                                                             $announcement->description, $date_time, 
-                                                                             $announcement->image_path));
+                    Mail::to($user)->send(new UpdateAnnouncementDistribution($user, $creator_name, $action, $media, 
+                                                                             $announcement->title, $announcement->description, 
+                                                                             $date_time, $announcement->image_path));
                 }
             }        
-        } else if ($action === 'DELETE_ANNOUNCEMENT') {
+        } elseif ($action === 'DELETE_ANNOUNCEMENT') {
             // Nothing to do
             // The deletion is handle by the database (onDelete cascade)
-        } else if ($action === 'CREATE_DISTRIBUTION' || $action === 'EDIT_DISTRIBUTION') {
+        } elseif ($action === 'CREATE_DISTRIBUTION' || $action === 'EDIT_DISTRIBUTION') {
             // Combine create and edit because update on edit is to complex.
             // Instead of edit, delete first then recreate
             if ($action === 'EDIT_DISTRIBUTION') {
@@ -131,17 +133,17 @@ class AnnouncementDistributionController extends Controller
             $media_name = Media::where('id', $media_id)->first()->name;
             if ($media_name === 'Rotating Slide') {
                 $column = 'rotating_slide';
-            } else if ($media_name === 'Pengumuman Misa') {
+            } elseif ($media_name === 'Pengumuman Misa') {
                 $column = 'mass_announcement';
-            } else if ($media_name === 'Flyer') {
+            } elseif ($media_name === 'Flyer') {
                 $column = 'flyer';
-            } else if ($media_name === 'Bulletin Dombaku') {
+            } elseif ($media_name === 'Bulletin Dombaku') {
                 $column = 'bulletin';
-            } else if ($media_name === 'Website') {
+            } elseif ($media_name === 'Website') {
                 $column = 'website';
-            } else if ($media_name === 'Facebook') {
+            } elseif ($media_name === 'Facebook') {
                 $column = 'facebook';
-            } else if ($media_name === 'Instagram') {
+            } elseif ($media_name === 'Instagram') {
                 $column = 'instagram';
             }
             $routine_announcements = Announcement::whereBetween('date_time', 
@@ -168,7 +170,7 @@ class AnnouncementDistributionController extends Controller
                     'revision_no' => $announcement->current_revision_no,
                 ]);
             }
-        } else if ($action === 'DELETE_DISTRIBUTION') {
+        } elseif ($action === 'DELETE_DISTRIBUTION') {
             // Nothing to do
             // The deletion is handle by the database (onDelete cascade)
         }
@@ -187,8 +189,13 @@ class AnnouncementDistributionController extends Controller
         $user = Auth::user();
         if ($distribution_id === null) {
             $now = Carbon::now();
-            $offline_media_ids = Media::where('is_online', false)->pluck('id')->toArray();
-            $offline_distributions = Distribution::where('date_time', '>', $now)->whereIn('media_id', $offline_media_ids)->orderBy('date_time')->get();
+            $offline_media_ids = Media::where('is_online', false)
+                                      ->pluck('id')
+                                      ->toArray();
+            $offline_distributions = Distribution::where('date_time', '>', $now)
+                                                 ->whereIn('media_id', $offline_media_ids)
+                                                 ->orderBy('date_time')
+                                                 ->get();
             foreach ($offline_distributions as $distribution) {
                 $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
                 $distribution->deadline = Carbon::parse($distribution->deadline)->format('l, j F Y, g:i a');
@@ -197,14 +204,18 @@ class AnnouncementDistributionController extends Controller
                 $now_to_deadline_diff = $now->diffInSeconds($deadline, false);
                 if ($now_to_deadline_diff < 0) {
                     $distribution->status = 'FINAL';
-                } else if (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
+                } elseif (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
                     $distribution->status = 'MENDEKATI BATAS AKHIR (DEADLINE)';
                 } else {
                     $distribution->status = 'MENERIMA PENGUMUMAN';
                 }
             }
-            $online_media_ids = Media::where('is_online', true)->pluck('id')->toArray();
-            $online_distributions = Distribution::whereIn('media_id', $online_media_ids)->orderBy('description')->get();
+            $online_media_ids = Media::where('is_online', true)
+                                     ->pluck('id')
+                                     ->toArray();
+            $online_distributions = Distribution::whereIn('media_id', $online_media_ids)
+                                                ->orderBy('description')
+                                                ->get();
             return view('announcementdistribution.index', ['offline_distributions' => $offline_distributions,
                                                            'online_distributions' => $online_distributions]);
         } else {
@@ -221,14 +232,16 @@ class AnnouncementDistributionController extends Controller
             $now_to_deadline_diff = $now->diffInSeconds($deadline, false);
             if ($now_to_deadline_diff < 0) {
                 $distribution->status = 'FINAL';
-            } else if (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
+            } elseif (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
                 $distribution->status = 'MENDEKATI BATAS AKHIR (DEADLINE)';
             } else {
                 $distribution->status = 'MENERIMA PENGUMUMAN';
             }
             $media_name = $distribution->media()->first()->name;
             $announcements = array();
-            $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)->where('is_rejected', false)->get();            
+            $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
+                                                                  ->where('is_rejected', false)
+                                                                  ->get();            
             foreach ($announcement_distributions as $announcement_distribution) {
                 // Append revision instead of the announcement
                 $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)->
@@ -241,11 +254,14 @@ class AnnouncementDistributionController extends Controller
                 array_push($announcements, $revision);
             }
             $rejected_announcements = array();
-            $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)->where('is_rejected', true)->get();            
+            $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
+                                                                  ->where('is_rejected', true)
+                                                                  ->get();            
             foreach ($announcement_distributions as $announcement_distribution) {
                 // Append revision instead of the announcement
-                $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)->
-                                where('revision_no', $announcement_distribution->revision_no)->first();
+                $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)
+                                    ->where('revision_no', $announcement_distribution->revision_no)
+                                    ->first();
                 $revision->announcement_distribution_id = $announcement_distribution->id;
                 if ($revision->image_path !== null) {
                     $revision->image_path = Storage::url($revision->image_path);
@@ -274,8 +290,13 @@ class AnnouncementDistributionController extends Controller
         }
         if ($distribution_id === null) {
             $ten_days_before = Carbon::now()->subDays(10);
-            $offline_media_ids = Media::where('is_online', false)->pluck('id')->toArray();
-            $offline_distributions = Distribution::where('date_time', '>', $ten_days_before)->whereIn('media_id', $offline_media_ids)->orderBy('date_time')->get();
+            $offline_media_ids = Media::where('is_online', false)
+                                      ->pluck('id')
+                                      ->toArray();
+            $offline_distributions = Distribution::where('date_time', '>', $ten_days_before)
+                                                 ->whereIn('media_id', $offline_media_ids)
+                                                 ->orderBy('date_time')
+                                                 ->get();
             foreach ($offline_distributions as $distribution) {
                 $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
                 $deadline = Carbon::parse($distribution->deadline);
@@ -283,14 +304,18 @@ class AnnouncementDistributionController extends Controller
                 $now_to_deadline_diff = $now->diffInSeconds($deadline, false);
                 if ($now_to_deadline_diff < 0) {
                     $distribution->status = 'FINAL';
-                } else if (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
+                } elseif (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
                     $distribution->status = 'MENDEKATI BATAS AKHIR (DEADLINE)';
                 } else {
                     $distribution->status = 'MENERIMA PENGUMUMAN';
                 }
             }
-            $online_media_ids = Media::where('is_online', true)->pluck('id')->toArray();
-            $online_distributions = Distribution::whereIn('media_id', $online_media_ids)->orderBy('description')->get();
+            $online_media_ids = Media::where('is_online', true)
+                                     ->pluck('id')
+                                     ->toArray();
+            $online_distributions = Distribution::whereIn('media_id', $online_media_ids)
+                                                ->orderBy('description')
+                                                ->get();
             return view('announcementdistribution.manage.distributions', ['offline_distributions' => $offline_distributions,
                                                                           'online_distributions' => $online_distributions]);
         } else {
@@ -307,18 +332,21 @@ class AnnouncementDistributionController extends Controller
             $now_to_deadline_diff = $now->diffInSeconds($deadline, false);
             if ($now_to_deadline_diff < 0) {
                 $distribution->status = 'FINAL';
-            } else if (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
+            } elseif (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
                 $distribution->status = 'MENDEKATI BATAS AKHIR (DEADLINE)';
             } else {
                 $distribution->status = 'MENERIMA PENGUMUMAN';
             }
             $media_name = $distribution->media()->first()->name;
             $announcements = array();
-            $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)->where('is_rejected', false)->get();            
+            $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
+                                                                  ->where('is_rejected', false)
+                                                                  ->get();            
             foreach ($announcement_distributions as $announcement_distribution) {
                 // Append revision instead of the announcement
-                $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)->
-                                where('revision_no', $announcement_distribution->revision_no)->first();
+                $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)
+                                    ->where('revision_no', $announcement_distribution->revision_no)
+                                    ->first();
                 $revision->announcement_distribution_id = $announcement_distribution->id;
                 if ($revision->image_path !== null) {
                     $revision->image_path = Storage::url($revision->image_path);
@@ -328,11 +356,14 @@ class AnnouncementDistributionController extends Controller
                 array_push($announcements, $revision);
             }
             $rejected_announcements = array();
-            $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)->where('is_rejected', true)->get();            
+            $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
+                                                                  ->where('is_rejected', true)
+                                                                  ->get();            
             foreach ($announcement_distributions as $announcement_distribution) {
                 // Append revision instead of the announcement
-                $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)->
-                                where('revision_no', $announcement_distribution->revision_no)->first();
+                $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)
+                                    ->where('revision_no', $announcement_distribution->revision_no)
+                                    ->first();
                 $revision->announcement_distribution_id = $announcement_distribution->id;
                 if ($revision->image_path !== null) {
                     $revision->image_path = Storage::url($revision->image_path);
@@ -372,7 +403,8 @@ class AnnouncementDistributionController extends Controller
         AnnouncementDistribution::where('id', $announcement_distribution_id)->update([
             'revision_no' => $revision_number,
         ]);
-        return redirect('/announcementdistribution/manage/'.$announcement_distribution->distribution_id)->with('success_message', 'Pengumuman tersebut dalam distribusi ini telah diubah ke versi terbaru.');
+        return redirect('/announcementdistribution/manage/'.$announcement_distribution->distribution_id)
+               ->with('success_message', 'Pengumuman tersebut dalam distribusi ini telah diubah ke versi terbaru.');
     }
     
     /**

@@ -10,7 +10,6 @@
         padding: 0;
         margin: 0;
     }
-    
     img {
         display: block;
         margin: auto;
@@ -147,7 +146,6 @@
                             </div>
                         </div>
                         @endif
-                        
                         @if ($announcement->facebook !== null)
                         <div class="panel panel-default">
                             <div class="panel-heading">

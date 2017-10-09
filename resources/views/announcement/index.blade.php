@@ -17,7 +17,6 @@
     th[name='description-col'] {
         width: 60%;
     }
-    
     pre {
         border: 0;
         background-color: transparent;

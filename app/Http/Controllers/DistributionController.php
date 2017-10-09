@@ -38,17 +38,20 @@ class DistributionController extends Controller
         $now = Carbon::now();
         $ten_days_before = $now->subDays(10);
         $offline_media_ids = Media::where('is_online', false)->pluck('id')->toArray();
-        $offline_distributions = Distribution::where('date_time', '>', $ten_days_before)->whereIn('media_id', $offline_media_ids)->orderBy('date_time')->get();
+        $offline_distributions = Distribution::where('date_time', '>', $ten_days_before)
+                                             ->whereIn('media_id', $offline_media_ids)
+                                             ->orderBy('date_time')
+                                             ->get();
         foreach ($offline_distributions as $distribution) {
             $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
             $distribution->deadline = Carbon::parse($distribution->deadline)->format('l, j F Y, g:i a');
             $distribution->media_name = $distribution->media()->first()->name;
             $deadline = Carbon::parse($distribution->deadline);
-            
+            $now = Carbon::now();
             $now_to_deadline_diff = $now->diffInSeconds($deadline, false);
             if ($now_to_deadline_diff < 0) {
                 $distribution->status = 'FINAL';
-            } else if (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
+            } elseif (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
                 $distribution->status = 'MENDEKATI BATAS AKHIR (DEADLINE)';
             } else {
                 $distribution->status = 'MENERIMA PENGUMUMAN';
@@ -91,14 +94,16 @@ class DistributionController extends Controller
         $now_to_deadline_diff = $now->diffInSeconds($deadline, false);
         if ($now_to_deadline_diff < 0) {
             $distribution->status = 'FINAL';
-        } else if (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
+        } elseif (0 < $now_to_deadline_diff && $now_to_deadline_diff < 24 * 3600) {
             $distribution->status = 'MENDEKATI BATAS AKHIR (DEADLINE)';
         } else {
             $distribution->status = 'MENERIMA PENGUMUMAN';
         }
         $media_name = $distribution->media()->first()->name;
         $announcements = array();
-        $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)->where('is_rejected', false)->get();            
+        $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
+                                                              ->where('is_rejected', false)
+                                                              ->get();            
         foreach ($announcement_distributions as $announcement_distribution) {
             // Append revision instead of the announcement
             $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)->
@@ -107,25 +112,13 @@ class DistributionController extends Controller
             if ($revision->image_path !== null) {
                 $revision->image_path = Storage::url($revision->image_path);
             }
-            if ($media_name === 'Rotating Slide') {
-                $revision->description = null;
-            } else if ($media_name === 'Pengumuman Misa') {
-                $revision->description = $revision->mass_announcement;
-            } else if ($media_name === 'Flyer') {
-                $revision->description = null;
-            } else if ($media_name === 'Bulletin Dombaku') {
-                $revision->description = $revision->bulletin;
-            } else if ($media_name === 'Website') {
-                $revision->description = $revision->website;
-            } else if ($media_name === 'Facebook') {
-                $revision->description = $revision->facebook;
-            } else if ($media_name === 'Instagram') {
-                $revision->description = $revision->instagram;
-            }
+            $revision->description = $revision->get_description_by_media_name($media_name);
             array_push($announcements, $revision);
         }
         $rejected_announcements = array();
-        $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)->where('is_rejected', true)->get();            
+        $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
+                                                              ->where('is_rejected', true)
+                                                              ->get();            
         foreach ($announcement_distributions as $announcement_distribution) {
             // Append revision instead of the announcement
             $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)->
@@ -134,27 +127,12 @@ class DistributionController extends Controller
             if ($revision->image_path !== null) {
                 $revision->image_path = Storage::url($revision->image_path);
             }
-            if ($media_name === 'Rotating Slide') {
-                $revision->description = null;
-            } else if ($media_name === 'Pengumuman Misa') {
-                $revision->description = $revision->mass_announcement;
-            } else if ($media_name === 'Flyer') {
-                $revision->description = null;
-            } else if ($media_name === 'Bulletin Dombaku') {
-                $revision->description = $revision->bulletin;
-            } else if ($media_name === 'Website') {
-                $revision->description = $revision->website;
-            } else if ($media_name === 'Facebook') {
-                $revision->description = $revision->facebook;
-            } else if ($media_name === 'Instagram') {
-                $revision->description = $revision->instagram;
-            }
+            $revision->description = $revision->get_description_by_media_name($media_name);
             array_push($rejected_announcements, $revision);
         }
         return view('distribution.view', ['distribution' => $distribution,
-                                                      'announcements' => $announcements,
-                                                      'rejected_announcements' => $rejected_announcements]);
-        
+                                          'announcements' => $announcements,
+                                          'rejected_announcements' => $rejected_announcements]);
     }
     
     /**
@@ -226,7 +204,8 @@ class DistributionController extends Controller
             }
             // Cannot edit distribution for online media
             if ($distribution->media()->first()->is_online) {
-                return redirect('/distribution')->with('error_message', 'Anda tidak diperbolehkan mengubah distribusi yang menggunakan media tersebut.');
+                return redirect('/distribution')
+                       ->with('error_message', 'Anda tidak diperbolehkan mengubah distribusi yang menggunakan media tersebut.');
             }
             $distribution->date_time = Carbon::parse($distribution->date_time)->format('m/d/Y g:i A');
             $distribution->deadline = Carbon::parse($distribution->deadline)->format('m/d/Y g:i A');
@@ -285,7 +264,8 @@ class DistributionController extends Controller
         }
         // Cannot delete distribution for online media
         if ($distribution->media()->first()->is_online) {
-            return redirect('/distribution')->with('error_message', 'Anda tidak diperbolehkan menghapus distribusi yang menggunakan media tersebut.');
+            return redirect('/distribution')
+                   ->with('error_message', 'Anda tidak diperbolehkan menghapus distribusi yang menggunakan media tersebut.');
         }
         $update_announcement_distribution_details = array(
             'action' => 'DELETE_DISTRIBUTION',

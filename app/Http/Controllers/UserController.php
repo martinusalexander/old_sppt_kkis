@@ -19,8 +19,7 @@ class UserController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         // $this->middleware('auth');
     }
     
@@ -237,7 +236,6 @@ class UserController extends Controller
             // Send email to user for acknowledgement
             Mail::to($user)->send(new PasswordChanged($user));
             return redirect('/login')->with('success_message', 'Password Anda telah berhasil diatur ulang (reset). Silakan login ulang.');
-            
         }
     }
     
@@ -279,7 +277,7 @@ class UserController extends Controller
             User::where('id', $user_id)->update([
                 'is_distributor' => !$previous_condition,
             ]);
-        } else if ($role === 'manager') {
+        } elseif ($role === 'manager') {
             $previous_condition = $user->is_manager;
             User::where('id', $user_id)->update([
                 'is_manager' => !$previous_condition,
