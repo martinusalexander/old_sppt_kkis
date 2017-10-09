@@ -471,6 +471,7 @@ class AnnouncementController extends Controller
             abort(404);
         }
         $announcement = Announcement::where('id', $announcement_id)->first();
+        $announcement->image_path = Storage::url($announcement->image_path);
         $announcement->date_time = Carbon::parse($announcement->date_time)->format('m/d/Y g:i A');
         // Invalid URL
         if (!$announcement) {
@@ -551,7 +552,7 @@ class AnnouncementController extends Controller
         }
         // Update the announcement
         $revision_number = Revision::where('announcement_id', $id)->max('revision_no') + 1;
-        $announcement = Announcement::where('id', $id)->update([
+        Announcement::where('id', $id)->update([
             'current_revision_no' => $revision_number,
             'title' => $title,
             'description' => $description,
@@ -569,6 +570,7 @@ class AnnouncementController extends Controller
             'is_approved' => true,
             'approver_id' => Auth::id()
         ]);
+        $announcement = Announcement::where('id', $id)->first();
         // Create revision to the announcement
         Revision::create([
             'announcement_id' => $id,

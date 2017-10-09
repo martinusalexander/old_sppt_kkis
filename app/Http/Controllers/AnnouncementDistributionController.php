@@ -42,11 +42,18 @@ class AnnouncementDistributionController extends Controller
             if ($action === 'EDIT_ANNOUNCEMENT') {
                 $old_announcement = $details['old_announcement'];
                 $new_announcement = $details['new_announcement'];
+                // Delete offline announcement distributions which are not final yet
                 $not_deadline_ids = Distribution::where('deadline', '>', $now->format('Y-m-d H:i:s'))
                                                 ->pluck('id')
                                                 ->toArray();
                 AnnouncementDistribution::where('announcement_id', $old_announcement->id)
                                         ->whereIn('distribution_id', $not_deadline_ids)
+                                        ->delete();
+                // Delete all online distributions
+                $online_media_ids = Media::where('is_online', true)->pluck('id')->toArray();
+                $online_distribution_ids = Distribution::whereIn('media_id', $online_media_ids)->pluck('id')->toArray();
+                AnnouncementDistribution::where('announcement_id', $old_announcement->id)
+                                        ->whereIn('distribution_id', $online_distribution_ids)
                                         ->delete();
                 $announcement = $new_announcement;
                 $action = 'mengubah';
@@ -83,15 +90,26 @@ class AnnouncementDistributionController extends Controller
             if ($announcement->instagram !== null) {
                 array_push($online_media, "Instagram");
             }
-            $media = array_merge($offline_media, $online_media);
-            $media_ids = Media::whereIn('name', $media)->pluck('id')->toArray();
-            $distributions = Distribution::where('date_time', '>', $now)
+            // Proceed with offline distributions
+            $offline_media_ids = Media::whereIn('name', $offline_media)->pluck('id')->toArray();
+            $offline_distributions = Distribution::where('date_time', '>', $now)
                                          ->where('date_time', '>', Carbon::parse($announcement->date_time)->subDays($announcing_duration))
                                          ->where('date_time', '<', $announcement->date_time)
                                          ->where('deadline', '>', $now->format('Y-m-d H:i:s'))
-                                         ->whereIn('media_id', $media_ids)
+                                         ->whereIn('media_id', $offline_media_ids)
                                          ->get();
-            foreach ($distributions as $distribution) {
+            foreach ($offline_distributions as $distribution) {
+                AnnouncementDistribution::create([
+                    'announcement_id' => $announcement->id,
+                    'distribution_id' => $distribution->id,
+                    'revision_no' => $announcement->current_revision_no,
+                ]);
+            }
+            // Proceed with online distributions
+            $online_media_ids = Media::whereIn('name', $online_media)->pluck('id')->toArray();
+            $online_distributions = Distribution::whereIn('media_id', $online_media_ids)
+                                         ->get();
+            foreach ($online_distributions as $distribution) {
                 AnnouncementDistribution::create([
                     'announcement_id' => $announcement->id,
                     'distribution_id' => $distribution->id,
@@ -110,9 +128,10 @@ class AnnouncementDistributionController extends Controller
             }
             foreach ($online_media as $media) {
                 foreach ($admins_and_managers as $user) {
+                    $image_path = storage_path('/app/'.$announcement->image_path);
                     Mail::to($user)->send(new UpdateAnnouncementDistribution($user, $creator_name, $action, $media, 
                                                                              $announcement->title, $announcement->description, 
-                                                                             $date_time, $announcement->image_path));
+                                                                             $date_time, $image_path));
                 }
             }        
         } elseif ($action === 'DELETE_ANNOUNCEMENT') {
@@ -239,9 +258,21 @@ class AnnouncementDistributionController extends Controller
             }
             $media_name = $distribution->media()->first()->name;
             $announcements = array();
-            $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
-                                                                  ->where('is_rejected', false)
-                                                                  ->get();            
+            if (!$distribution->is_online) {
+                $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
+                                                                      ->where('is_rejected', false)
+                                                                      ->get();         
+            } else {
+                $fourteen_days_before = Carbon::now()->subDays(14)->format('Y-m-d H:i:s');
+                $thirty_five_days_after = Carbon::now()->addDays(35)->format('Y-m-d H:i:s');
+                $announcement_ids = $distribution->announcements()->where('date_time', '>', $fourteen_days_before)
+                                                               ->where('date_time', '<', $thirty_five_days_after)
+                                                               ->where('is_approved', true)
+                                                               ->pluck('announcement.id')->toArray();
+                $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
+                                                                      ->whereIn('announcement_id', $announcement_ids)
+                                                                      ->get();
+            }
             foreach ($announcement_distributions as $announcement_distribution) {
                 // Append revision instead of the announcement
                 $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)->
@@ -339,9 +370,21 @@ class AnnouncementDistributionController extends Controller
             }
             $media_name = $distribution->media()->first()->name;
             $announcements = array();
-            $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
-                                                                  ->where('is_rejected', false)
-                                                                  ->get();            
+            if (!$distribution->is_online) {
+                $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
+                                                                      ->where('is_rejected', false)
+                                                                      ->get();         
+            } else {
+                $fourteen_days_before = Carbon::now()->subDays(14)->format('Y-m-d H:i:s');
+                $thirty_five_days_after = Carbon::now()->addDays(35)->format('Y-m-d H:i:s');
+                $announcement_ids = $distribution->announcements()->where('date_time', '>', $fourteen_days_before)
+                                                               ->where('date_time', '<', $thirty_five_days_after)
+                                                               ->where('is_approved', true)
+                                                               ->pluck('announcement.id')->toArray();
+                $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
+                                                                      ->whereIn('announcement_id', $announcement_ids)
+                                                                      ->get();
+            }     
             foreach ($announcement_distributions as $announcement_distribution) {
                 // Append revision instead of the announcement
                 $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)

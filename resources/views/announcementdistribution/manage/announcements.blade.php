@@ -60,8 +60,10 @@
                                 {{ $announcement->title }} 
                                 <span class="pull-right">
                                     <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#announcement-{{ $loop->index }}"> Lihat </a>
+                                    @if (!$distribution->is_online)
                                     <a class="btn btn-danger btn-xs" href="/announcementdistribution/reject/{{ $announcement->announcement_distribution_id }}"> Tolak </a>
                                     <a class="btn btn-warning btn-xs" href="/announcementdistribution/update/{{ $announcement->announcement_distribution_id }}"> Ubah ke versi terbaru </a>
+                                    @endif
                                 </span>
                             </div>
                             <div id="announcement-{{ $loop->index }}" class="panel-collapse collapse">
