@@ -221,7 +221,7 @@ class AnnouncementDistributionController extends Controller
         } else {
             $distribution = Distribution::where('id', $distribution_id)->first();
             if (!$distribution) {
-                return redirect('/announcementdistribution/manage')->with('error_message', 'Link yang Anda masukkan salah.');
+                abort(404);
             }
             $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
             $distribution->deadline = Carbon::parse($distribution->deadline)->format('l, j F Y, g:i a');
@@ -286,7 +286,7 @@ class AnnouncementDistributionController extends Controller
         // Normal user is not allowed to access this page
         $user = Auth::user();
         if (!$user->is_distributor && !$user->is_manager && !$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         if ($distribution_id === null) {
             $ten_days_before = Carbon::now()->subDays(10);
@@ -321,7 +321,7 @@ class AnnouncementDistributionController extends Controller
         } else {
             $distribution = Distribution::where('id', $distribution_id)->first();
             if (!$distribution) {
-                return redirect('/announcementdistribution/manage')->with('error_message', 'Link yang Anda masukkan salah.');
+                abort(404);
             }
             $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
             $distribution->deadline = Carbon::parse($distribution->deadline)->format('l, j F Y, g:i a');
@@ -388,22 +388,22 @@ class AnnouncementDistributionController extends Controller
         // Normal user is not allowed to access this page
         $user = Auth::user();
         if (!$user->is_distributor && !$user->is_manager && !$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         // Invalid URL
         if ($announcement_distribution_id === null) {
-            return redirect('/announcementdistribution/manage')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $announcement_distribution = AnnouncementDistribution::where('id', $announcement_distribution_id)->first();
         // Invalid URL
         if (!$announcement_distribution) {
-            return redirect('/announcementdistribution/manage')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $revision_number = $announcement_distribution->announcement()->first()->current_revision_no;
         AnnouncementDistribution::where('id', $announcement_distribution_id)->update([
             'revision_no' => $revision_number,
         ]);
-        return redirect('/announcementdistribution/manage/'.$announcement_distribution->distribution_id)
+        return redirect('/announcementdistribution/manage/'.$announcement_distribution->distribution_id, 303)
                ->with('success_message', 'Pengumuman tersebut dalam distribusi ini telah diubah ke versi terbaru.');
     }
     
@@ -417,16 +417,16 @@ class AnnouncementDistributionController extends Controller
         // Normal user is not allowed to access this page
         $user = Auth::user();
         if (!$user->is_distributor && !$user->is_manager && !$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         // Invalid URL
         if ($announcement_distribution_id === null) {
-            return redirect('/announcementdistribution/manage')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $announcement_distribution = AnnouncementDistribution::where('id', $announcement_distribution_id)->first();
         // Invalid URL
         if (!$announcement_distribution) {
-            return redirect('/announcementdistribution/manage')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $is_rejected = $announcement_distribution->is_rejected;
         AnnouncementDistribution::where('id', $announcement_distribution_id)->update([
@@ -437,6 +437,6 @@ class AnnouncementDistributionController extends Controller
         } else {
             $success_message = 'Pengumuman yang sebelumnya ditolak tersebut telah dimasukkan kembali dalam distribusi ini.';
         }
-        return redirect('/announcementdistribution/manage/'.$announcement_distribution->distribution_id)->with('success_message', $success_message);
+        return redirect('/announcementdistribution/manage/'.$announcement_distribution->distribution_id, 303)->with('success_message', $success_message);
     }
 }

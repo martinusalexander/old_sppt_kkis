@@ -33,7 +33,7 @@ class DistributionController extends Controller
         // Normal user is not allowed to access this page
         $user = Auth::user();
         if (!$user->is_distributor && !$user->is_manager && !$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         $now = Carbon::now();
         $ten_days_before = $now->subDays(10);
@@ -74,16 +74,16 @@ class DistributionController extends Controller
         // Normal user is not allowed to access this page
         $user = Auth::user();
         if (!$user->is_distributor && !$user->is_manager && !$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         // Invalid URL
         if ($distribution_id === null) {
-            return redirect('/distribution')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $distribution = Distribution::where('id', $distribution_id)->first();
         // Invalid URL
         if (!$distribution) {
-            return redirect('/distribution')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
         $distribution->deadline = Carbon::parse($distribution->deadline)->format('l, j F Y, g:i a');
@@ -145,7 +145,7 @@ class DistributionController extends Controller
         // Normal user is not allowed to access this page
         $user = Auth::user();
         if (!$user->is_distributor && !$user->is_manager && !$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         if ($request->isMethod('get')) {
             $media = Media::where('is_online', false)->get();
@@ -157,7 +157,7 @@ class DistributionController extends Controller
             $media_id = $request->input('media');
             // Cannot create distribution for online media
             if (Media::where('id', $media_id)->first()->is_online) {
-                return redirect('/distribution')->with('error_message', 'Anda tidak diperbolehkan membuat distribusi menggunakan media tersebut.');
+                abort(403);
             }
             // Convert dates to database format
             $date_time = Carbon::parse($date_time)->format('Y-m-d H:i:s');
@@ -175,7 +175,7 @@ class DistributionController extends Controller
             // Must call the function in another controller non-statically
             // Reference: https://stackoverflow.com/a/19694064
             (new AnnouncementDistributionController)->update($update_announcement_distribution_details);
-            return redirect('/distribution')->with('success_message', 'Distribusi telah berhasil dibuat.');
+            return redirect('/distribution', 303)->with('success_message', 'Distribusi telah berhasil dibuat.');
         }        
     }
     
@@ -190,22 +190,21 @@ class DistributionController extends Controller
         // Normal user is not allowed to access this page
         $user = Auth::user();
         if (!$user->is_distributor && !$user->is_manager && !$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         if ($request->isMethod('get')) {
             // Invalid URL
             if ($distribution_id === null) {
-                return redirect('/distribution')->with('error_message', 'Link yang Anda masukkan salah.');
+                abort(404);
             }
             $distribution = Distribution::where('id', $distribution_id)->first();
             // Invalid URL
             if (!$distribution) {
-                return redirect('/distribution')->with('error_message', 'Link yang Anda masukkan salah.');
+                abort(404);
             }
             // Cannot edit distribution for online media
             if ($distribution->media()->first()->is_online) {
-                return redirect('/distribution')
-                       ->with('error_message', 'Anda tidak diperbolehkan mengubah distribusi yang menggunakan media tersebut.');
+                abort(403);
             }
             $distribution->date_time = Carbon::parse($distribution->date_time)->format('m/d/Y g:i A');
             $distribution->deadline = Carbon::parse($distribution->deadline)->format('m/d/Y g:i A');
@@ -236,7 +235,7 @@ class DistributionController extends Controller
             // Must call the function in another controller non-statically
             // Reference: https://stackoverflow.com/a/19694064
             (new AnnouncementDistributionController)->update($update_announcement_distribution_details);
-            return redirect('/distribution')->with('success_message', 'Distribusi telah berhasil diubah.');
+            return redirect('/distribution', 303)->with('success_message', 'Distribusi telah berhasil diubah.');
         }        
     }
     
@@ -251,21 +250,20 @@ class DistributionController extends Controller
         // Normal user is not allowed to access this page
         $user = Auth::user();
         if (!$user->is_distributor && !$user->is_manager && !$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         // Invalid URL
         if ($distribution_id === null) {
-            return redirect('/distribution')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $distribution = Distribution::where('id', $distribution_id)->first();
         // Invalid URL
         if (!$distribution) {
-            return redirect('/distribution')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         // Cannot delete distribution for online media
         if ($distribution->media()->first()->is_online) {
-            return redirect('/distribution')
-                   ->with('error_message', 'Anda tidak diperbolehkan menghapus distribusi yang menggunakan media tersebut.');
+            abort(403);
         }
         $update_announcement_distribution_details = array(
             'action' => 'DELETE_DISTRIBUTION',
@@ -275,6 +273,6 @@ class DistributionController extends Controller
         // Reference: https://stackoverflow.com/a/19694064
         (new AnnouncementDistributionController)->update($update_announcement_distribution_details);
         $distribution->delete();
-        return redirect('/distribution')->with('success_message', 'Distribusi Anda telah berhasil dihapus.');
+        return redirect('/distribution', 303)->with('success_message', 'Distribusi Anda telah berhasil dihapus.');
     }
 }

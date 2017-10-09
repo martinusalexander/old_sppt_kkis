@@ -119,12 +119,12 @@ class UserController extends Controller
     public function activate(Request $request, $token) {
         $user = User::where('email_token', $token)->first();
         if (!$user) {
-            return redirect('/login')->with('error_message', 'Tautan yang Anda masukkan tidak valid.');
+            return redirect('/login', 303)->with('error_message', 'Tautan yang Anda masukkan tidak valid.');
         }
         $user->email_token = null;
         $user->is_active = true;
         $user->save();
-        return redirect('/login')->with('success_message', 'Akun Anda sudah berhasil diaktivasi. Silakan login.');
+        return redirect('/login', 303)->with('success_message', 'Akun Anda sudah berhasil diaktivasi. Silakan login.');
     }
     
     /**
@@ -145,7 +145,7 @@ class UserController extends Controller
             $user = Auth::User();
             $user->update(['name' => $name,
                            'organization_name' => $organization_name]);
-            return redirect('/')->with('success_message', 'Profil Anda telah berhasil diubah.');
+            return redirect('/', 303)->with('success_message', 'Profil Anda telah berhasil diubah.');
         }
     }
     
@@ -178,7 +178,7 @@ class UserController extends Controller
                 Mail::to($user)->send(new PasswordChanged($user));
                 // Logout
                 Auth::logout();
-                return redirect('/login')->with('success_message', 'Password Anda telah berhasil diganti. Silakan login ulang.');
+                return redirect('/login', 303)->with('success_message', 'Password Anda telah berhasil diganti. Silakan login ulang.');
             }
             
         }
@@ -200,12 +200,12 @@ class UserController extends Controller
             $email_token = base64_encode($email);
             $user = User::where('email', $email)->first();
             if (!$user) {
-                return redirect('/login')->with('error_message', 'Email yang Anda masukkan tidak terdaftar.');
+                return redirect('/login', 303)->with('error_message', 'Email yang Anda masukkan tidak terdaftar.');
             } 
             $user->update(['email_token' => $email_token]);
             // Send email to user for follow up
             Mail::to($user)->send(new ResetPassword($user));
-            return redirect('/login')->with('success_message', 'Permintaan untuk mengatur ulang (reset) password Anda telah berhasil diproses. Silakan cek email Anda untuk proses lebih lanjut.');
+            return redirect('/login', 303)->with('success_message', 'Permintaan untuk mengatur ulang (reset) password Anda telah berhasil diproses. Silakan cek email Anda untuk proses lebih lanjut.');
         }
     }
     
@@ -220,7 +220,7 @@ class UserController extends Controller
         if ($request->isMethod('get')) {
             $user = User::where('email_token', $token)->first();
             if (!$user) {
-                return redirect('/login')->with('error_message', 'Tautan yang Anda masukkan tidak valid.');
+                return redirect('/login', 303)->with('error_message', 'Tautan yang Anda masukkan tidak valid.');
             }
             return view('user.resetpassword', ['user' => $user]);
         } else {
@@ -233,9 +233,10 @@ class UserController extends Controller
             // Update the password
             $user->update(['password' => $password,
                            'email_token' => null]);
+            Auth::logout();
             // Send email to user for acknowledgement
             Mail::to($user)->send(new PasswordChanged($user));
-            return redirect('/login')->with('success_message', 'Password Anda telah berhasil diatur ulang (reset). Silakan login ulang.');
+            return redirect('/login', 303)->with('success_message', 'Password Anda telah berhasil diatur ulang (reset). Silakan login ulang.');
         }
     }
     
@@ -247,7 +248,7 @@ class UserController extends Controller
      */
     public function manage(Request $request) {
         if (!Auth::user()->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         $accounts = User::get();
         $user = Auth::user();
@@ -262,15 +263,15 @@ class UserController extends Controller
      */
     public function set(Request $request, $role = null, $user_id = null) {
         if (!Auth::user()->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         $roles = array('distributor', 'manager', 'admin');
         if ($role === null || $user_id === null || !in_array($role, $roles)) {
-            return redirect('/accountmanagement/')->with('error_message', 'Link yang Anda masukkan salah.');
+            return redirect('/accountmanagement/', 303)->with('error_message', 'Link yang Anda masukkan salah.');
         }
         $user = User::where('id', $user_id)->first();
         if (!$user) {
-            return redirect('/accountmanagement/')->with('error_message', 'Link yang Anda masukkan salah.');
+            return redirect('/accountmanagement/', 303)->with('error_message', 'Link yang Anda masukkan salah.');
         }
         if ($role === 'distributor') {
             $previous_condition = $user->is_distributor;
@@ -295,7 +296,7 @@ class UserController extends Controller
             $action = 'dinaikkan ke';
         }
         $success_message = $user->name.' telah berhasil '.$action.' '.$role.'.';
-        return redirect('/accountmanagement/')->with('success_message', $success_message);
+        return redirect('/accountmanagement/', 303)->with('success_message', $success_message);
     }
     
 }

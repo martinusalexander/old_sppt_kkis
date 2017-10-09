@@ -136,7 +136,7 @@ class AnnouncementController extends Controller
                 'instagram' => $instagram,
                 'submitter_id' => Auth::id(),
             ]);
-            return redirect('/announcement/')->with('success_message', 'Pengumuman Anda telah berhasil dibuat.');
+            return redirect('/announcement/', 303)->with('success_message', 'Pengumuman Anda telah berhasil dibuat.');
         }
     }
     
@@ -152,17 +152,17 @@ class AnnouncementController extends Controller
             // Display the edit announcement form
             // Invalid URL
             if ($announcement_id === null) {
-                return redirect('/announcement')->with('error_message', 'Link yang Anda masukkan salah.');
+                abort(404);
             }
             $announcement = Announcement::where('id', $announcement_id)->first();
             // Invalid URL
             if (!$announcement) {
-                return redirect('/announcement')->with('error_message', 'Link yang Anda masukkan salah.');
+                abort(404);
             }
             // Non-admin and non-manager user cannot change other's annnouncement
             $user = Auth::user();
             if (!$user->is_admin && !$user->is_manager && $announcement->creator_id != Auth::id()) {
-                return redirect('/announcement')->with('error_message', 'Anda tidak diperbolehkan mengubah pengumuman yang bukan milik Anda.');
+                abort(403);
             }
             // Get image URL
             if ($announcement->image_path !== null) {
@@ -279,7 +279,7 @@ class AnnouncementController extends Controller
                 //Reference: https://stackoverflow.com/a/19694064
                 (new AnnouncementDistributionController)->update($update_announcement_distribution_details);
             }
-            return redirect('/announcement/')->with('success_message', 'Pengumuman Anda telah berhasil diubah.');
+            return redirect('/announcement/', 303)->with('success_message', 'Pengumuman Anda telah berhasil diubah.');
         }
     }
     
@@ -294,12 +294,12 @@ class AnnouncementController extends Controller
         // Display the view announcement page
         // Invalid URL
         if ($announcement_id === null) {
-            return redirect('/announcement')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $announcement = Announcement::where('id', $announcement_id)->first();
         // Invalid URL
         if (!$announcement) {
-            return redirect('/announcement')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         // Get image URL
         if ($announcement->image_path !== null) {
@@ -321,17 +321,17 @@ class AnnouncementController extends Controller
     public function delete(Request $request, $announcement_id = null) {
         // Invalid URL
         if ($announcement_id === null) {
-            return redirect('/announcement')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $announcement = Announcement::where('id', $announcement_id)->first();
         // Invalid URL
         if (!$announcement) {
-            return redirect('/announcement')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         // Non-admin and non-manager user cannot delete other's annnouncement
         $user = Auth::user();
         if (!$user->is_admin && !$user->is_manager && $announcement->creator_id != Auth::id()) {
-            return redirect('/announcement')->with('error_message', 'Anda tidak diperbolehkan menghapus pengumuman yang bukan milik Anda.');
+            abort(403);
         }
         $revisions = $announcement->revisions()->get();
         // Delete each image that belongs to the announcement
@@ -352,7 +352,7 @@ class AnnouncementController extends Controller
         }
         
         $announcement->delete();
-        return redirect('/announcement/')->with('success_message', 'Pengumuman Anda telah berhasil dihapus.');
+        return redirect('/announcement/', 303)->with('success_message', 'Pengumuman Anda telah berhasil dihapus.');
     }
     
     /**
@@ -366,16 +366,16 @@ class AnnouncementController extends Controller
         // Non-admin and non-manager user cannot go into this page
         $user = Auth::user();
         if (!$user->is_admin && !$user->is_manager) {
-            return redirect('/')->with('error_message', 'Anda tidak memiliki izin untuk mengakses halaman tersebut.');
+            abort(403);
         }
         // Invalid URL
         if ($announcement_id === null) {
-            return redirect('/announcement/approve')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $announcement = Announcement::where('id', $announcement_id)->first();
         // Invalid URL
         if (!$announcement) {
-            return redirect('/announcement/approve')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         // Get image URL
         if ($announcement->image_path !== null) {
@@ -402,7 +402,7 @@ class AnnouncementController extends Controller
         // Non-admin and non-manager user cannot go into this page
         $user = Auth::user();
         if (!$user->is_admin && !$user->is_manager) {
-            return redirect('/')->with('error_message', 'Anda tidak memiliki izin untuk mengakses halaman tersebut.');
+            abort(403);
         }
         $time_now = Carbon::now()->format('Y-m-d H:i:s');
         // Display all announcements
@@ -429,16 +429,16 @@ class AnnouncementController extends Controller
         // Non-admin and non-manager user cannot go into this page
         $user = Auth::user();
         if (!$user->is_admin && !$user->is_manager) {
-            return redirect('/')->with('error_message', 'Anda tidak memiliki izin untuk mengakses halaman tersebut.');
+            abort(403);
         }
         // Invalid URL
         if ($announcement_id === null) {
-            return redirect('/announcement/approve')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $announcement = Announcement::where('id', $announcement_id)->first();
         // Invalid URL
         if (!$announcement) {
-            return redirect('/announcement/approve')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         Announcement::where('id', $announcement_id)->update([
                             'is_approved' => true,
@@ -450,7 +450,7 @@ class AnnouncementController extends Controller
         // Must call the function in another controller non-statically
         //Reference: https://stackoverflow.com/a/19694064
         (new AnnouncementDistributionController)->update($update_announcement_distribution_details);
-        return redirect('/announcement/approve')->with('success_message', 'Pengumuman telah berhasil disetujui.');
+        return redirect('/announcement/approve', 303)->with('success_message', 'Pengumuman telah berhasil disetujui.');
     }
     
     /**
@@ -464,17 +464,17 @@ class AnnouncementController extends Controller
         // Non-admin and non-manager user cannot go into this page
         $user = Auth::user();
         if (!$user->is_admin && !$user->is_manager) {
-            return redirect('/')->with('error_message', 'Anda tidak memiliki izin untuk mengakses halaman tersebut.');
+            abort(403);
         }
         // Invalid URL
         if ($announcement_id === null) {
-            return redirect('/announcement/approve')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $announcement = Announcement::where('id', $announcement_id)->first();
         $announcement->date_time = Carbon::parse($announcement->date_time)->format('m/d/Y g:i A');
         // Invalid URL
         if (!$announcement) {
-            return redirect('/announcement/approve')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         return view('announcement.approve.edit', ['announcement' => $announcement]);
     }
@@ -489,7 +489,7 @@ class AnnouncementController extends Controller
         // Non-admin and non-manager user cannot go into this page
         $user = Auth::user();
         if (!$user->is_admin && !$user->is_manager) {
-            return redirect('/')->with('error_message', 'Anda tidak memiliki izin untuk mengakses halaman tersebut.');
+            abort(403);
         }
         // Edit the announcement and create revision
         $id = $request->input('id');
@@ -594,6 +594,6 @@ class AnnouncementController extends Controller
         // Must call the function in another controller non-statically
         //Reference: https://stackoverflow.com/a/19694064
         (new AnnouncementDistributionController)->update($update_announcement_distribution_details);
-        return redirect('/announcement/approve')->with('success_message', 'Pengumuman telah berhasil diubah dan disetujui.');
+        return redirect('/announcement/approve', 303)->with('success_message', 'Pengumuman telah berhasil diubah dan disetujui.');
     }
 }

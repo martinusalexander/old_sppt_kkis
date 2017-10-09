@@ -27,7 +27,7 @@ class MediaController extends Controller
         // Non-admin user cannot edit media
         $user = Auth::user();
         if (!$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         $media =  Media::get();
         return view('media.index', ['media' => $media]);
@@ -37,7 +37,7 @@ class MediaController extends Controller
         // Non-admin user cannot edit media
         $user = Auth::user();
         if (!$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         if ($request->isMethod('get')) {
             // Display new media form
@@ -62,7 +62,7 @@ class MediaController extends Controller
                     'media_id' => $media->id,
                 ]);
             }
-            return redirect('/media')->with('success_message', 'Media telah berhasil dibuat');
+            return redirect('/media', 303)->with('success_message', 'Media telah berhasil dibuat');
         }
     }
     
@@ -70,17 +70,17 @@ class MediaController extends Controller
         // Non-admin user cannot edit media
         $user = Auth::user();
         if (!$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         if ($request->isMethod('get')) {    
             // Invalid URL
             if ($media_id === null) {
-                return redirect('/media')->with('error_message', 'Link yang Anda masukkan salah.');
+                abort(404);
             }
             $media = Media::where('id', $media_id)->first();
             // Invalid URL
             if (!$media) {
-                return redirect('/media')->with('error_message', 'Link yang Anda masukkan salah.');
+                abort(404);
             }
             return view('media.edit', ['media' => $media]);
         } else {
@@ -118,7 +118,7 @@ class MediaController extends Controller
                     $new_media->distributions()->delete();
                 }
             }
-            return redirect('/media')->with('success_message', 'Media telah berhasil diubah.');
+            return redirect('/media', 303)->with('success_message', 'Media telah berhasil diubah.');
         }
     }
     
@@ -126,26 +126,26 @@ class MediaController extends Controller
         // Non-admin user cannot delete media
         $user = Auth::user();
         if (!$user->is_admin) {
-            return redirect('/')->with('error_message', 'Anda tidak diizinkan mengakses halaman ini.');
+            abort(403);
         }
         // Invalid URL
         if ($media_id === null) {
-            return redirect('/media')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $media = Media::where('id', $media_id)->first();
         // Invalid URL
         if (!$media) {
-            return redirect('/media')->with('error_message', 'Link yang Anda masukkan salah.');
+            abort(404);
         }
         $distribution = $media->distributions()->first();
         if ($media->is_online) {
             $distribution->delete();
         } else {
             if ($distribution) {
-                return redirect('/media')->with('error_message', 'Anda tidak dapat menghapu media ini karena masih ada distribusi yang menggunakan media ini.');
+                return redirect('/media')->with('error_message', 'Anda tidak dapat menghapus media ini karena masih ada distribusi yang menggunakan media ini.');
             }
         }
         $media->delete();
-        return redirect('/media')->with('success_message', 'Media telah berhasil dihapus.');
+        return redirect('/media', 303)->with('success_message', 'Media telah berhasil dihapus.');
     }
 }

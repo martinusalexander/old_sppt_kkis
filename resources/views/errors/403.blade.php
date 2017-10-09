@@ -1,0 +1,35 @@
+@extends('layout.base', ['hide_menu' => true])
+
+@section('title', '403 Forbidden')
+
+@section('extra_css')
+<style>
+    @media screen and (min-width: 768px) {
+        #title {
+            font-size: 120px;
+        }
+        #message {
+            font-size: 36px;
+        }
+    }
+    #title {
+        padding: 20px;
+    }
+    #message {
+        padding: 20px;
+    }
+    a {
+        padding: 10px;
+    }
+    
+</style>
+@endsection
+
+@section('content')
+    @include('layout.message')
+    <div class="row text-center">
+        <h1 id='title'>403 ERROR</h1>
+        <h2 id='message'>Unauthorized Action</h2>
+        <a class='btn btn-default btn-lg' href="/"> Kembali ke Menu Utama </a>
+    </div>
+@endsection
