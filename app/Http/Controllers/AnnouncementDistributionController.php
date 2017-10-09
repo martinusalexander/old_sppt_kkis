@@ -191,6 +191,7 @@ class AnnouncementDistributionController extends Controller
             $offline_distributions = Distribution::where('date_time', '>', $now)->whereIn('media_id', $offline_media_ids)->orderBy('date_time')->get();
             foreach ($offline_distributions as $distribution) {
                 $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
+                $distribution->deadline = Carbon::parse($distribution->deadline)->format('l, j F Y, g:i a');
                 $deadline = Carbon::parse($distribution->deadline);
                 $now = Carbon::now();
                 $now_to_deadline_diff = $now->diffInSeconds($deadline, false);

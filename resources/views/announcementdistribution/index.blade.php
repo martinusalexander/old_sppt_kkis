@@ -58,6 +58,7 @@
                             <a class="btn btn-default btn-block" href="/announcementdistribution/view/{{ $distribution->id }}">
                                 {{ $distribution->description }} <br> 
                                 ({{ $distribution->date_time }}) <br>
+                                (Deadline: {{ $distribution->deadline }}) <br>
                                 @if (@$distribution->status === 'FINAL')
                                 <span class="label label-danger">
                                 @elseif (@$distribution->status === 'MENERIMA PENGUMUMAN')
