@@ -15,7 +15,10 @@
         width: 25%;
     }
     th[name='description-col'] {
-        width: 60%;
+        width: 45%;
+    }
+    th[name='approve-col'] {
+        width: 15%;
     }
     pre {
         border: 0;
@@ -38,6 +41,7 @@
                     <th name="no-col"> No.</th>
                     <th name="title-col"> Judul </th>
                     <th name="description-col" class="hidden-xs"> Deskripsi </th>
+                    <th name="approve-col"> Telah Disetujui </th>
                     <th name="manage-col"> Kelola </th>
                 </tr>
             </thead>
@@ -47,6 +51,7 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $announcement->title }}</td>
                     <td class="hidden-xs" name="manage-col"><pre>{{ $announcement->description }}</pre></td>
+                    <td>@if ($announcement->is_approved) &#x2714; @else &#x2718; @endif</td>
                     <td>
                         <div class="list-group">
                             <a class="list-group-item list-group-item-info" href="/announcement/view/{{ $announcement->id }}"> Lihat </a>
