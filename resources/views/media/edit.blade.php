@@ -20,7 +20,7 @@
                 <div class="panel-heading">
                     <h3><b>Ubah Media</b></h3>
                 </div>
-                <form action="/media/edit/" role="form" method="POST" class="form-vertical">
+                <form action="/media/edit" role="form" method="POST" class="form-vertical">
                     {{ csrf_field() }}
                     <input type="hidden" name="id" id="id" value="{{ $media->id }}">
                     <div class="panel-body">

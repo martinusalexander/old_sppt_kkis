@@ -30,7 +30,7 @@
     @include('layout.message')
     <div class="row">
         <div class="form-group">
-            <a href="/announcement/create/" class="btn btn-primary" role="button">Buat Pengumuman Baru</a>
+            <a href="/announcement/create" class="btn btn-primary" role="button">Buat Pengumuman Baru</a>
         </div>
         <table id="announcements-table" class="table table-striped table-bordered table-hover">
             <thead>

@@ -23,7 +23,7 @@
                     <h3><b>Login</b></h3>
                 </div>
                 <div class="panel-body">
-                    <form action="/login/" role="form" method="POST" class="form-vertical">
+                    <form action="/login" role="form" method="POST" class="form-vertical">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="login-email">Email:</label>
@@ -41,7 +41,7 @@
                         </div>					
                     </form>
                     <div class="form-group">
-                        <a class="btn btn-link" href="/forgetpassword/">
+                        <a class="btn btn-link" href="/forgetpassword">
                         Lupa password? Klik disini!
                         </a>
                     </div>
@@ -54,7 +54,7 @@
                     <h3><b>Daftar</b></h3>
                 </div>
                 <div class="panel-body">
-                    <form name="register-form" action="/register/" role="form" method="POST" class="form-vertical" onsubmit="return validate_password()">
+                    <form name="register-form" action="/register" role="form" method="POST" class="form-vertical" onsubmit="return validate_password()">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="register-name">Nama:</label>

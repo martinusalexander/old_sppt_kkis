@@ -22,7 +22,7 @@
                 <div class="panel-heading">
                     <h3><b>Atur Ulang (Reset) Password</b></h3>
                 </div>
-                <form action="/resetpassword/" role="form" method="POST" class="form-vertical" onsubmit="return validate_password()">
+                <form action="/resetpassword" role="form" method="POST" class="form-vertical" onsubmit="return validate_password()">
                     {{ csrf_field() }}
                     <div class="panel-body">
                         <div class="row form-group center-block" >

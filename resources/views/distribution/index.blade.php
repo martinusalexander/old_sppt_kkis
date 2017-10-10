@@ -72,7 +72,7 @@
         <h3><b>Distribusi Offline</b></h3>
     </div>
     <div class="form-group">
-        <a href="/distribution/create/" class="btn btn-primary" role="button">Buat Distribusi Offline Baru</a>
+        <a href="/distribution/create" class="btn btn-primary" role="button">Buat Distribusi Offline Baru</a>
     </div>
     <div class="row">
         <table id="offline-distribution-table" class="table table-striped table-bordered table-hover">

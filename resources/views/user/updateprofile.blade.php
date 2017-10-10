@@ -8,7 +8,7 @@
         <div class="col xs-12 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4">
             <div cla
                 </div>
-                <form action="/updateprofile/" role="form" method="POST" class="form-vertical">
+                <form action="/updateprofile" role="form" method="POST" class="form-vertical">
                     {{ csrf_field() }}
                     <div class="panel-body">
                         <div class="row form-group center-block">

@@ -22,7 +22,7 @@
                 <div class="panel-heading">
                     <h3><b>Ubah Password</b></h3>
                 </div>
-                <form action="/changepassword/" role="form" method="POST" class="form-vertical" onsubmit="return validate_password()">
+                <form action="/changepassword" role="form" method="POST" class="form-vertical" onsubmit="return validate_password()">
                     {{ csrf_field() }}
                     <div class="panel-body">
                         <div class="row form-group center-block" >

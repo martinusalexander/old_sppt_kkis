@@ -174,7 +174,7 @@
                 <div class="panel-heading">
                     <h3><b>Ubah Pengumuman sebelum Persetujuan</b></h3>
                 </div>
-                <form action="/announcement/approve/confirm/" role="form" method="POST" enctype="multipart/form-data" class="form-vertical">
+                <form action="/announcement/approve/confirm" role="form" method="POST" enctype="multipart/form-data" class="form-vertical">
                     {{ csrf_field() }}
                     <div class="panel-body">
                         <input type="hidden" name="id" id="id" value="{{ $announcement->id }}">

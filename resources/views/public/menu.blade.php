@@ -30,14 +30,14 @@
                 <div class="panel-body">
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <a class="btn btn-default btn-block" href="/announcement/">
+                            <a class="btn btn-default btn-block" href="/announcement">
                                 Buat/Ubah/Hapus Pengumuman
                             </a>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <a class="btn btn-default btn-block" href="/announcementdistribution/">
+                            <a class="btn btn-default btn-block" href="/announcementdistribution">
                                 Lihat Seluruh Pengumuman
                             </a>
                         </div>
@@ -51,21 +51,21 @@
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <a class="btn btn-default btn-block" href="/updateprofile/">
+                            <a class="btn btn-default btn-block" href="/updateprofile">
                                 Ubah Profil
                             </a>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <a class="btn btn-default btn-block" href="/changepassword/">
+                            <a class="btn btn-default btn-block" href="/changepassword">
                                 Ubah Password
                             </a>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <a class="btn btn-default btn-block" href="/logout/">
+                            <a class="btn btn-default btn-block" href="/logout">
                                 Logout
                             </a>
                         </div>
@@ -82,7 +82,7 @@
                 <div class="panel-body">
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <a class="btn btn-default btn-block" href="/distribution/">
+                            <a class="btn btn-default btn-block" href="/distribution">
                                 Buat/Ubah/Hapus Distribusi
                             </a>
                         </div>
@@ -132,14 +132,14 @@
                 <div class="panel-body">
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <a class="btn btn-default btn-block" href="/media/">
+                            <a class="btn btn-default btn-block" href="/media">
                                 Buat/Ubah/Hapus Media
                             </a>
                         </div>
                     </div>
                     <div class="row form-group center-block">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <a class="btn btn-default btn-block" href="/accountmanagement/">
+                            <a class="btn btn-default btn-block" href="/accountmanagement">
                                 Kelola Akun
                             </a>
                         </div>

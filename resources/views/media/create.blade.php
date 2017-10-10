@@ -20,7 +20,7 @@
                 <div class="panel-heading">
                     <h3><b>Buat Media Baru</b></h3>
                 </div>
-                <form action="/media/create/" role="form" method="POST" class="form-vertical">
+                <form action="/media/create" role="form" method="POST" class="form-vertical">
                     {{ csrf_field() }}
                     <div class="panel-body">
                         <div class="row form-group center-block">
