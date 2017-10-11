@@ -17,18 +17,18 @@ class CreateRevisionTable extends Migration
             $table->increments('id');
             $table->integer('announcement_id')->unsigned();
             $table->integer('revision_no')->unsigned()->default(0);
-            $table->string('title');
-            $table->string('description');
+            $table->text('title');
+            $table->text('description');
             $table->datetime('date_time');
             $table->boolean('is_routine')->default(true);
             $table->string('image_path')->nullable();
             $table->boolean('rotating_slide')->default(false);
-            $table->string('mass_announcement')->nullable();
+            $table->text('mass_announcement')->nullable();
             $table->boolean('flyer')->default(false);
-            $table->string('bulletin')->nullable();
-            $table->string('website')->nullable();
-            $table->string('facebook')->nullable();
-            $table->string('instagram')->nullable();
+            $table->text('bulletin')->nullable();
+            $table->text('website')->nullable();
+            $table->text('facebook')->nullable();
+            $table->text('instagram')->nullable();
             $table->integer('submitter_id')->unsigned()->default(1);        
             $table->timestamps();
             

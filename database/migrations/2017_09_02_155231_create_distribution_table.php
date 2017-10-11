@@ -15,7 +15,7 @@ class CreateDistributionTable extends Migration
     {
         Schema::create('distribution', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description');
+            $table->text('description');
             $table->datetime('date_time')->nullable();
             $table->datetime('deadline')->nullable();
             $table->integer('media_id')->unsigned()->default(1);
