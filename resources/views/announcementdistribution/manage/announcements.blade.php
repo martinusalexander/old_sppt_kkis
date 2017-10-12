@@ -69,7 +69,7 @@
                             <div id="announcement-{{ $loop->index }}" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><span class="pull-right"><b>Pembuat:</b> {{ $announcement->creator_name }}</span></div>
-                                    <pre>{{ $announcement->description }}</pre>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><pre class="pre-scrollable">{{ $announcement->description }}</pre></div>
                                     @if ($announcement->image_path !== null)
                                     <img src="{{ $announcement->image_path }}" alt="Gambar tidak dapat dimuat.">
                                     @endif
@@ -98,9 +98,9 @@
                             <div id="rejected-announcement-{{ $loop->index }}" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><span class="pull-right"><b>Pembuat:</b> {{ $announcement->creator_name }}</span></div>
-                                    <pre>{{ $announcement->description }}</pre>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><pre>{{ $announcement->description }}</pre></div>
                                     @if ($announcement->image_path !== null)
-                                    <img src="{{ $announcement->image_path }}" alt="Gambar tidak dapat dimuat.">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><img src="{{ $announcement->image_path }}" alt="Gambar tidak dapat dimuat."></div>
                                     @endif
                                 </div>
                             </div>
