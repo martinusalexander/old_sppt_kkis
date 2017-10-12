@@ -70,13 +70,13 @@ class AnnouncementDistributionController extends Controller
             }
             $online_media = array();
             $offline_media = array();
-            if ($announcement->rotating_slide !== null) {
+            if ($announcement->rotating_slide != false) {
                 array_push($offline_media, "Rotating Slide");
             }
             if ($announcement->mass_announcement !== null) {
                 array_push($offline_media, "Pengumuman Misa");
             }
-            if ($announcement->flyer !== null) {
+            if ($announcement->flyer != false) {
                 array_push($offline_media, "Flyer");
             }
             if ($announcement->bulletin !== null) {
@@ -155,12 +155,16 @@ class AnnouncementDistributionController extends Controller
             }
             $media_id = $distribution->media_id;
             $media_name = Media::where('id', $media_id)->first()->name;
+            // By default, the expected value of the column is not null
+            $column_value = null;
             if ($media_name === 'Rotating Slide') {
                 $column = 'rotating_slide';
+                $column_value = false;
             } elseif ($media_name === 'Pengumuman Misa') {
                 $column = 'mass_announcement';
             } elseif ($media_name === 'Flyer') {
                 $column = 'flyer';
+                $column_value = false;
             } elseif ($media_name === 'Bulletin Dombaku') {
                 $column = 'bulletin';
             } elseif ($media_name === 'Website') {
@@ -173,12 +177,12 @@ class AnnouncementDistributionController extends Controller
             $routine_announcements = Announcement::whereBetween('date_time', 
                                                                 [Carbon::parse($distribution->date_time)->format('Y-m-d H:i:s'),
                                                                  Carbon::parse($distribution->date_time)->addDays(35)->format('Y-m-d H:i:s')])
-                                                 ->where($column, '!=', null)
+                                                 ->where($column, '!=', $column_value)
                                                  ->where('is_approved', true)->get();
             $not_routine_announcements = Announcement::whereBetween('date_time', 
                                                                     [Carbon::parse($distribution->date_time)->addDays(35)->format('Y-m-d H:i:s'),
                                                                      Carbon::parse($distribution->date_time)->addDays(70)->format('Y-m-d H:i:s')])
-                                                     ->where($column, '!=', null)
+                                                     ->where($column, '!=', $column_value)
                                                      ->where('is_approved', true)->get();
             foreach ($routine_announcements as $announcement) {
                 AnnouncementDistribution::create([
