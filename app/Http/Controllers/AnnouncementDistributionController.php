@@ -527,7 +527,7 @@ class AnnouncementDistributionController extends Controller
             if (!in_array($distribution_id, $allow_download_distributions)) {
                 abort(403);
             }
-            $script = $distribution->description.' ('.Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a').')'."\n";
+            $script = $distribution->description.' ('.Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a').')'."\r\n\r\n";
             $media_name = $distribution->media()->first()->name;
             $announcement_distributions = AnnouncementDistribution::where('distribution_id', $distribution_id)
                                                                  ->where('is_rejected', false)
@@ -540,8 +540,8 @@ class AnnouncementDistributionController extends Controller
                 $revision = Revision::where('announcement_id', $announcement_distribution->announcement_id)
                                     ->where('revision_no', $announcement_distribution->revision_no)
                                     ->first();
-                $script .= $i.'. '.$revision->title."\n";
-                $script .= $revision->get_description_by_media_name($media_name)."\n\n";
+                $script .= $i.'. '.$revision->title."\r\n";
+                $script .= $revision->get_description_by_media_name($media_name)."\r\n\r\n";
                 if ($revision->image_path !== null) {
                     $image_path = storage_path('app/'.$revision->image_path);
                     array_push($image_path_array, $image_path);
