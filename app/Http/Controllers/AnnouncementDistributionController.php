@@ -303,6 +303,7 @@ class AnnouncementDistributionController extends Controller
                                     ->where('revision_no', $announcement_distribution->revision_no)
                                     ->first();
                 $revision->announcement_distribution_id = $announcement_distribution->id;
+                $revision->reject_reason = $announcement_distribution->reject_reason;
                 if ($revision->image_path !== null) {
                     $revision->image_path = Storage::url($revision->image_path);
                 }
@@ -417,6 +418,7 @@ class AnnouncementDistributionController extends Controller
                                     ->where('revision_no', $announcement_distribution->revision_no)
                                     ->first();
                 $revision->announcement_distribution_id = $announcement_distribution->id;
+                $revision->reject_reason = $announcement_distribution->reject_reason;
                 if ($revision->image_path !== null) {
                     $revision->image_path = Storage::url($revision->image_path);
                 }
@@ -465,7 +467,39 @@ class AnnouncementDistributionController extends Controller
      * @param Request $request
      * @return redirect
      */
-    public function reject(Request $request, $announcement_distribution_id = null) {
+    public function reject(Request $request) {
+        // Normal user is not allowed to access this page
+        $user = Auth::user();
+        if (!$user->is_distributor && !$user->is_manager && !$user->is_admin) {
+            abort(403);
+        }
+        $announcement_distribution_id = $request->input('id');
+        $reason = $request->input('reason');
+        // Invalid URL
+        if ($announcement_distribution_id === null) {
+            abort(404);
+        }
+        $announcement_distribution = AnnouncementDistribution::where('id', $announcement_distribution_id)->first();
+        // Invalid URL
+        if (!$announcement_distribution) {
+            abort(404);
+        }
+        $is_rejected = $announcement_distribution->is_rejected;
+        AnnouncementDistribution::where('id', $announcement_distribution_id)->update([
+            'is_rejected' => true,
+            'reject_reason' => $reason,
+        ]);
+        $success_message = 'Pengumuman tersebut telah berhasil ditolak dalam distribusi ini.';
+        return redirect('/announcementdistribution/manage/'.$announcement_distribution->distribution_id, 303)->with('success_message', $success_message);
+    }
+    
+    /**
+     * Accept the rejected announcement distribution (e.g. because of quota)
+     * 
+     * @param Request $request
+     * @return redirect
+     */
+    public function accept(Request $request, $announcement_distribution_id = null) {
         // Normal user is not allowed to access this page
         $user = Auth::user();
         if (!$user->is_distributor && !$user->is_manager && !$user->is_admin) {
@@ -480,15 +514,11 @@ class AnnouncementDistributionController extends Controller
         if (!$announcement_distribution) {
             abort(404);
         }
-        $is_rejected = $announcement_distribution->is_rejected;
         AnnouncementDistribution::where('id', $announcement_distribution_id)->update([
-            'is_rejected' => !$is_rejected,
+            'is_rejected' => false,
+            'reject_reason' => null,
         ]);
-        if (!$is_rejected) {
-            $success_message = 'Pengumuman tersebut telah berhasil ditolak dalam distribusi ini.';
-        } else {
-            $success_message = 'Pengumuman yang sebelumnya ditolak tersebut telah dimasukkan kembali dalam distribusi ini.';
-        }
+        $success_message = 'Pengumuman yang sebelumnya ditolak tersebut telah dimasukkan kembali dalam distribusi ini.';
         return redirect('/announcementdistribution/manage/'.$announcement_distribution->distribution_id, 303)->with('success_message', $success_message);
     }
     

@@ -15,7 +15,29 @@
         margin: auto;
         width: 50%; 
     }
+    form {
+        margin: 0;
+        padding: 0;
+        display: inline!important;
+    }
 </style>
+@endsection
+
+@section('extra_js')
+<script>
+    $(document).ready(function() {
+        $("form").submit(function (e) {
+            e.preventDefault();
+            var form = this;
+            var reason = prompt("Mohon masukkan alasan penolakan:", "Kuota tidak mencukupi");
+            while (reason === "") {
+                reason = prompt("Mohon masukkan alasan penolakan:", "Kuota tidak mencukupi");
+            }
+            $(this).find("[name='reason']").val(reason);
+            this.submit();
+        });
+    });
+</script>
 @endsection
 
 @section('content')
@@ -61,7 +83,12 @@
                                 <span class="pull-right">
                                     <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#announcement-per-media" href="#announcement-{{ $loop->index }}"> Lihat </a>
                                     @if (!$distribution->is_online)
-                                    <a class="btn btn-danger btn-xs" href="/announcementdistribution/reject/{{ $announcement->announcement_distribution_id }}"> Tolak </a>
+                                    <form action="/announcementdistribution/reject" method="post">
+                                        <input type="hidden" name="id" value="{{ $announcement->announcement_distribution_id }}">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="reason" value="">
+                                        <button class="btn btn-danger btn-xs"> Tolak </button>
+                                    </form>
                                     <a class="btn btn-warning btn-xs" href="/announcementdistribution/update/{{ $announcement->announcement_distribution_id }}"> Ubah ke versi terbaru </a>
                                     @endif
                                 </span>
@@ -92,8 +119,9 @@
                                 {{ $announcement->title }} 
                                 <span class="pull-right">
                                     <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#rejected-announcement-per-media" href="#rejected-announcement-{{ $loop->index }}"> Lihat </a>
-                                    <a class="btn btn-danger btn-xs" href="/announcementdistribution/reject/{{ $announcement->announcement_distribution_id }}"> Batalkan Penolakan </a>
+                                    <a class="btn btn-danger btn-xs" href="/announcementdistribution/accept/{{ $announcement->announcement_distribution_id }}"> Batalkan Penolakan </a>
                                 </span>
+                                <h6><i> Tidak dapat ditampilkan karena: {{ $announcement->reject_reason }}</i></h6>
                             </div>
                             <div id="rejected-announcement-{{ $loop->index }}" class="panel-collapse collapse">
                                 <div class="panel-body">

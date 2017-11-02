@@ -88,6 +88,7 @@
                                 <span class="pull-right">
                                     <a class="btn btn-info btn-xs" data-toggle="collapse" data-parent="#rejected-announcement-per-media" href="#rejected-announcement-{{ $loop->index }}"> Lihat </a>
                                 </span>
+                                <h6><i> Tidak dapat ditampilkan karena: {{ $announcement->reject_reason }}</i></h6>
                             </div>
                             <div id="rejected-announcement-{{ $loop->index }}" class="panel-collapse collapse">
                                 <div class="panel-body">

@@ -69,7 +69,8 @@ Route::match(['get'], '/announcementdistribution/view/{distribution_id}', 'Annou
 Route::match(['get'], '/announcementdistribution/manage', 'AnnouncementDistributionController@manage');
 Route::match(['get'], '/announcementdistribution/manage/{distribution_id}', 'AnnouncementDistributionController@manage');
 Route::match(['get'], '/announcementdistribution/update/{announcement_distribution_id}', 'AnnouncementDistributionController@update_to_latest_version');
-Route::match(['get'], '/announcementdistribution/reject/{announcement_distribution_id}', 'AnnouncementDistributionController@reject');
+Route::match(['post'], '/announcementdistribution/reject', 'AnnouncementDistributionController@reject');
+Route::match(['get'], '/announcementdistribution/accept/{announcement_distribution_id}', 'AnnouncementDistributionController@accept');
 Route::match(['get'], '/announcementdistribution/download', 'AnnouncementDistributionController@download');
 Route::match(['get'], '/announcementdistribution/download/{distribution_id}', 'AnnouncementDistributionController@download');
 
