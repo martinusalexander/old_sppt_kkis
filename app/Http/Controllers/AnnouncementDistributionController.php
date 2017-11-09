@@ -537,20 +537,21 @@ class AnnouncementDistributionController extends Controller
         }
         if ($distribution_id === null) {
             $now = Carbon::now();
-            $distributions = Distribution::where('deadline', '<', $now->format('Y-m-d H:i:s'))
+            $distributions = Distribution::where('deadline', '<', $now->subHours(24)->format('Y-m-d H:i:s'))
                                          ->where('date_time', '>', $now->subDays(21)->format('Y-m-d H:i:s'))
                                          ->get();
             foreach ($distributions as $distribution) {
                 $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
             }
-            return view('announcementdistribution.download.download', ['distributions' => $distributions]);
+            return view('announcementdistribution.download.download', ['distributions' => $distributions,
+                                                                       'warning_message' => nl2br("Pengumuman dalam distribusi hanya bisa diunduh 24 jam setelah batas akhir (deadline).")]);
         } else {
             $distribution = Distribution::where('id', $distribution_id)->first();
             if (!$distribution) {
                 abort(404);
             }
             $now = Carbon::now();
-            $allow_download_distributions = Distribution::where('deadline', '<', $now->format('Y-m-d H:i:s'))
+            $allow_download_distributions = Distribution::where('deadline', '<', $now->subHours(24)->format('Y-m-d H:i:s'))
                                                         ->where('date_time', '>', $now->subDays(21)->format('Y-m-d H:i:s'))
                                                         ->pluck('id')->toArray();
             // Distributions that cannot be downloaded yet
