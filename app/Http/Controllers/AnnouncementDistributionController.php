@@ -272,9 +272,8 @@ class AnnouncementDistributionController extends Controller
                                                                       ->where('is_rejected', false)
                                                                       ->get();         
             } else {
-                $fourteen_days_before = Carbon::now()->subDays(14)->format('Y-m-d H:i:s');
                 $thirty_five_days_after = Carbon::now()->addDays(35)->format('Y-m-d H:i:s');
-                $announcement_ids = $distribution->announcements()->where('date_time', '>', $fourteen_days_before)
+                $announcement_ids = $distribution->announcements()->where('date_time', '>', $now)
                                                                ->where('date_time', '<', $thirty_five_days_after)
                                                                ->where('is_approved', true)
                                                                ->pluck('announcement.id')->toArray();
@@ -385,9 +384,8 @@ class AnnouncementDistributionController extends Controller
                                                                       ->where('is_rejected', false)
                                                                       ->get();         
             } else {
-                $fourteen_days_before = Carbon::now()->subDays(14)->format('Y-m-d H:i:s');
                 $thirty_five_days_after = Carbon::now()->addDays(35)->format('Y-m-d H:i:s');
-                $announcement_ids = $distribution->announcements()->where('date_time', '>', $fourteen_days_before)
+                $announcement_ids = $distribution->announcements()->where('date_time', '>', $now)
                                                                ->where('date_time', '<', $thirty_five_days_after)
                                                                ->where('is_approved', true)
                                                                ->pluck('announcement.id')->toArray();
