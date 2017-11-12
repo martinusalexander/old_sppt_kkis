@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 use Auth;
 use Carbon\Carbon;
+use App\User;
 use App\Announcement;
 use App\Revision;
 use App\Http\Controllers\AnnouncementDistributionController;
+use App\Mail\ApproveAnnouncement;
 
 class AnnouncementController extends Controller
 {
@@ -136,6 +139,12 @@ class AnnouncementController extends Controller
                 'instagram' => $instagram,
                 'submitter_id' => Auth::id(),
             ]);
+            $admins_and_managers = User::where('is_admin', true)
+                                       ->orWhere('is_manager', true)
+                                       ->get();
+            foreach ($admins_and_managers as $user) {
+                Mail::to($user)->send(new ApproveAnnouncement($user));
+            }
             return redirect('/announcement/', 303)->with('success_message', 'Pengumuman Anda telah berhasil dibuat.');
         }
     }
