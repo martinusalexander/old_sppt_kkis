@@ -139,6 +139,7 @@ class AnnouncementController extends Controller
                 'instagram' => $instagram,
                 'submitter_id' => Auth::id(),
             ]);
+            // Send email to admin and manager, asking for approval
             $admins_and_managers = User::where('is_admin', true)
                                        ->orWhere('is_manager', true)
                                        ->get();
@@ -242,7 +243,6 @@ class AnnouncementController extends Controller
             }
             // Update the announcement
             $revision_number = Revision::where('announcement_id', $id)->max('revision_no') + 1;
-            $old_announcement = Announcement::where('id', $id)->first();
             Announcement::where('id', $id)->update([
                 'current_revision_no' => $revision_number,
                 'title' => $title,
@@ -258,8 +258,10 @@ class AnnouncementController extends Controller
                 'facebook' => $facebook,
                 'instagram' => $instagram,
                 'last_editor_id' => Auth::id(),
+                'is_approved' => false,
+                'approver_id' => null,
             ]);
-            $new_announcement = Announcement::where('id', $id)->first();
+            $announcement = Announcement::where('id', $id)->first();
             // Create revision to the announcement
             Revision::create([
                 'announcement_id' => $id,
@@ -278,15 +280,19 @@ class AnnouncementController extends Controller
                 'instagram' => $instagram,
                 'submitter_id' => Auth::id(),
             ]);
-            if ($new_announcement->is_approved) {
-                $update_announcement_distribution_details = array(
-                    'action' => 'EDIT_ANNOUNCEMENT',
-                    'old_announcement' => $old_announcement,
-                    'new_announcement' => $new_announcement,
-                );
-                // Must call the function in another controller non-statically
-                //Reference: https://stackoverflow.com/a/19694064
-                (new AnnouncementDistributionController)->update($update_announcement_distribution_details);
+            $update_announcement_distribution_details = array(
+                'action' => 'EDIT_ANNOUNCEMENT',
+                'announcement' => $announcement,
+            );
+            // Must call the function in another controller non-statically
+            //Reference: https://stackoverflow.com/a/19694064
+            (new AnnouncementDistributionController)->update($update_announcement_distribution_details);
+            // Send email to admin and manager, asking for approval
+            $admins_and_managers = User::where('is_admin', true)
+                                       ->orWhere('is_manager', true)
+                                       ->get();
+            foreach ($admins_and_managers as $user) {
+                Mail::to($user)->send(new ApproveAnnouncement($user));
             }
             return redirect('/announcement/', 303)->with('success_message', 'Pengumuman Anda telah berhasil diubah.');
         }
@@ -453,7 +459,7 @@ class AnnouncementController extends Controller
                             'is_approved' => true,
                             'approver_id' => Auth::id()]);
         $update_announcement_distribution_details = array(
-            'action' => 'CREATE_ANNOUNCEMENT',
+            'action' => 'APPROVE_ANNOUNCEMENT',
             'announcement' => $announcement,
         );
         // Must call the function in another controller non-statically
@@ -599,7 +605,7 @@ class AnnouncementController extends Controller
             'submitter_id' => Auth::id(),
         ]);
         $update_announcement_distribution_details = array(
-            'action' => 'CREATE_ANNOUNCEMENT',
+            'action' => 'APPROVE_ANNOUNCEMENT',
             'announcement' => $announcement,
         );
         // Must call the function in another controller non-statically

@@ -17,7 +17,7 @@ class CreateAnnouncementDistributionTable extends Migration
             $table->increments('id');
             $table->integer('announcement_id')->unsigned()->default(1);
             $table->integer('distribution_id')->unsigned()->default(1);
-            $table->integer('revision_no')->unsigned()->default(0);
+            $table->integer('revision_no')->nullable()->unsigned()->default(null);
             $table->boolean('is_rejected')->default(false);
             $table->string('reject_reason')->nullable()->default(null);
             $table->timestamps();
