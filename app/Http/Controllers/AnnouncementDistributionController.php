@@ -118,9 +118,7 @@ class AnnouncementDistributionController extends Controller
                 ]);
             }
             // Send the request of distributing using online media to admins and managers
-            $admins_and_managers = User::where('is_admin', true)
-                                       ->orWhere('is_manager', true)
-                                       ->get();
+            $admins = User::where('is_admin', true)->get();
             $creator_name = User::where('id', $announcement->creator_id)->first()->name;
             if (Carbon::parse($announcement->date_time)->subDays($announcing_duration)->diffInSeconds($now, false) < 0) {
                 $date_time = Carbon::parse($announcement->date_time)->subDays($announcing_duration)->format('l, j F Y, g:i a');
@@ -128,7 +126,7 @@ class AnnouncementDistributionController extends Controller
                 $date_time = Carbon::now()->format('l, j F Y, g:i a');
             }
             foreach ($online_media as $media) {
-                foreach ($admins_and_managers as $user) {
+                foreach ($admins as $user) {
                     if ($announcement->image_path !== null) {
                         $image_path = storage_path('/app/'.$announcement->image_path);
                     } else {
