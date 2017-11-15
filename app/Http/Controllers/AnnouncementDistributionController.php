@@ -555,7 +555,7 @@ class AnnouncementDistributionController extends Controller
         if ($distribution_id === null) {
             $now = Carbon::now();
             $distributions = Distribution::where('deadline', '<', $now->subHours(24)->format('Y-m-d H:i:s'))
-                                         ->where('date_time', '>', $now->subDays(21)->format('Y-m-d H:i:s'))
+                                         ->where('date_time', '>', $now->subDays(10)->format('Y-m-d H:i:s'))
                                          ->get();
             foreach ($distributions as $distribution) {
                 $distribution->date_time = Carbon::parse($distribution->date_time)->format('l, j F Y, g:i a');
@@ -569,7 +569,7 @@ class AnnouncementDistributionController extends Controller
             }
             $now = Carbon::now();
             $allow_download_distributions = Distribution::where('deadline', '<', $now->subHours(24)->format('Y-m-d H:i:s'))
-                                                        ->where('date_time', '>', $now->subDays(21)->format('Y-m-d H:i:s'))
+                                                        ->where('date_time', '>', $now->subDays(10)->format('Y-m-d H:i:s'))
                                                         ->pluck('id')->toArray();
             // Distributions that cannot be downloaded yet
             if (!in_array($distribution_id, $allow_download_distributions)) {
