@@ -8,7 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\User;
 
-class ApproveAnnouncement extends Mailable
+class ApproveAnnouncement extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
     
