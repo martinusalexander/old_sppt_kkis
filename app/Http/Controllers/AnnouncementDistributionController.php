@@ -115,6 +115,17 @@ class AnnouncementDistributionController extends Controller
             // Send the request of distributing using online media to admins
             $admins = User::where('is_admin', true)->get();
             $creator_name = User::where('id', $announcement->creator_id)->first()->name;
+            $announcement_title = $announcement->title;
+            $announcement_content = array();
+            if (in_array("Website", $online_media)) {
+                $announcement_content["Website"] = $announcement->website;                       
+            }
+            if (in_array("Facebook", $online_media)) {
+                $announcement_content["Facebook"] = $announcement->facebook;
+            }
+            if (in_array("Instagram", $online_media)) {
+                $announcement_content["Instagram"] = $announcement->instagram;
+            }   
             if (Carbon::parse($announcement->date_time)->subDays($announcing_duration)->diffInSeconds($now, false) < 0) {
                 $date_time = Carbon::parse($announcement->date_time)->subDays($announcing_duration)->format('l, j F Y, g:i a');
             } else {
@@ -125,13 +136,13 @@ class AnnouncementDistributionController extends Controller
             } else {
                 $image_path = null;
             }
-            foreach ($online_media as $media) {
+            if (!empty($announcement_content)) {
                 foreach ($admins as $user) {
-                    Mail::to($user)->send(new UpdateAnnouncementDistribution($user, $creator_name, $action, $media, 
-                                                                             $announcement->title, $announcement->description, 
+                    Mail::to($user)->send(new UpdateAnnouncementDistribution($user, $creator_name, $action, 
+                                                                             $announcement_title, $announcement_content, 
                                                                              $date_time, $image_path));
                 }
-            }        
+            }
         } elseif ($action === 'EDIT_ANNOUNCEMENT') {
             $now = Carbon::now();
             $announcement = $details['announcement'];

@@ -34,13 +34,6 @@ class UpdateAnnouncementDistribution extends Mailable implements ShouldQueue
     protected $action;
     
     /**
-     * The name of the media
-     * 
-     * @var media_name
-     */
-    protected $media_name;
-    
-    /**
      * The title of the announcement
      * 
      * @var title
@@ -48,11 +41,12 @@ class UpdateAnnouncementDistribution extends Mailable implements ShouldQueue
     protected $title;
     
     /**
-     * The description of the announcement
+     * The content of the announcement
+     * An keyed array (mapping from media name to the corresponding content)
      * 
-     * @var media_name
+     * @var content
      */
-    protected $description;
+    protected $content;
     
     /**
      * The date_time of the distribution
@@ -73,14 +67,13 @@ class UpdateAnnouncementDistribution extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, $requester_name, $action, $media_name, $title, $description, $date_time, $image_filepath = null)
+    public function __construct(User $user, $requester_name, $action, $title, $content, $date_time, $image_filepath = null)
     {
         $this->user = $user;
         $this->requester_name = $requester_name;
         $this->action = $action;
-        $this->media_name = $media_name;
         $this->title = $title;
-        $this->description = $description;
+        $this->content = $content;
         $this->date_time = $date_time;
         $this->image_filepath = $image_filepath;
     }
@@ -99,9 +92,8 @@ class UpdateAnnouncementDistribution extends Mailable implements ShouldQueue
                         'name' => $this->user->name,
                         'creator_name' => $this->requester_name,
                         'action' => $this->action,
-                        'media_name' => $this->media_name,
                         'title' => $this->title,
-                        'description' => $this->description,
+                        'content' => $this->content,
                         'date_time' => $this->date_time,
                     ]);
         if ($this->image_filepath !== null) {
